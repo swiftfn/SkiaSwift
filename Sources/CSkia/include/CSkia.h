@@ -1,3 +1,4 @@
+#include "c/gr_context.h"
 #include "c/sk_canvas.h"
 #include "c/sk_colorspace.h"
 #include "c/sk_data.h"

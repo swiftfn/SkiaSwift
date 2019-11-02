@@ -65,7 +65,7 @@ public class Path {
     get {
       var rect = sk_rect_t()
       sk_path_get_bounds(raw, &rect)
-      return Rect.fromSk(rect)
+      return rect.toSwift()
     }
   }
 }

@@ -1,16 +1,18 @@
 import CSkia
 
 public class RenderTarget {
-  public static func newGl(width: Int32, height: Int32, samples: Int32, stencils: Int32, glInfo: gr_gl_framebufferinfo_t) -> RenderTarget {
-    var info = glInfo
-    let raw = gr_backendrendertarget_new_gl(width, height, samples, stencils, &info)
-    return RenderTarget(raw!)
-  }
-
   var raw: OpaquePointer
 
-  init(_ raw: OpaquePointer) {
-    self.raw = raw
+  public init(width: Int32, height: Int32, sampleCount: Int32, stencilBits: Int32, glInfo: GlFramebufferInfo) {
+    var info = glInfo.toSk()
+    let raw = gr_backendrendertarget_new_gl(
+      width,
+      height,
+      sampleCount,
+      stencilBits,
+      &info
+    )
+    self.raw = raw!
   }
 
   deinit {
@@ -21,8 +23,10 @@ public class RenderTarget {
     gr_backendrendertarget_delete(raw)
   }
 
-  public func isValid() -> Bool {
-    return gr_backendrendertarget_is_valid(raw)
+  var valid: Bool {
+    get {
+      return gr_backendrendertarget_is_valid(raw)
+    }
   }
 
   var width: Int32 {
@@ -37,29 +41,41 @@ public class RenderTarget {
     }
   }
 
-  var samples: Int32 {
+  var sampleCount: Int32 {
     get {
       return gr_backendrendertarget_get_samples(raw)
     }
   }
 
-  var stencils: Int32 {
+  var stencilBits: Int32 {
     get {
       return gr_backendrendertarget_get_stencils(raw)
     }
   }
 
-  var backend: gr_backend_t {
+  var backend: Backend {
     get {
-      return gr_backendrendertarget_get_backend(raw)
+      return gr_backendrendertarget_get_backend(raw).toSwift()
     }
   }
 
-  var glInfo: gr_gl_framebufferinfo_t {
+  var size: SizeI {
+    get {
+      return SizeI(width: width, height: height)
+    }
+  }
+
+  var rect: RectI {
+    get {
+      return RectI(0, 0, width, height)
+    }
+  }
+
+  var glInfo: GlFramebufferInfo {
     get {
       var glInfo = gr_gl_framebufferinfo_t()
       gr_backendrendertarget_get_gl_framebufferinfo(raw, &glInfo)
-      return glInfo
+      return glInfo.toSwift()
     }
   }
 }

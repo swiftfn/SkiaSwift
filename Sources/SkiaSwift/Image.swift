@@ -6,7 +6,7 @@ public class Image {
     return Image(raw!)
   }
 
-  public static func fromEncoded(encoded: ImageData, subset: IRect) -> Image {
+  public static func fromEncoded(encoded: ImageData, subset: RectI) -> Image {
     var r = subset.toSk()
     let raw = sk_image_new_from_encoded(encoded.raw, &r)
     return Image(raw!)

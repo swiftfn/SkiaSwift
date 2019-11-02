@@ -1,3 +1,5 @@
+import CSkia
+
 public enum SurfaceOrigin {
   case topLeft,
   bottomLeft
@@ -19,6 +21,21 @@ public enum PixelConfig {
   rgFloat,
   alphaHalf,
   rgbaHalf
+}
+
+extension gr_backend_t {
+  func toSwift() -> Backend {
+    switch (self) {
+      case METAL_GR_BACKEND:
+        return Backend.metal
+      case OPENGL_GR_BACKEND:
+        return Backend.openGl
+      case VULKAN_GR_BACKEND:
+        return Backend.vulkan
+      default:
+        fatalError("Unknown backend")
+    }
+  }
 }
 
 public enum Backend {
@@ -49,17 +66,30 @@ public enum BackendState: UInt32 {
   all       = 0xffffffff
 }
 
-public struct GlFramebufferInfo {
-  var fboId: UInt  // framebuffer object ID
-  var format: UInt = 0
+extension gr_gl_framebufferinfo_t {
+  func toSwift() -> GlFramebufferInfo {
+    return GlFramebufferInfo(fboId: fFBOID, format: fFormat)
+  }
+}
 
-  public init(fboId: UInt) {
+public struct GlFramebufferInfo {
+  var fboId: UInt32  // framebuffer object ID
+  var format: UInt32 = 0
+
+  public init(fboId: UInt32) {
     self.fboId = fboId
   }
 
-  public init(fboId: UInt, format: UInt) {
+  public init(fboId: UInt32, format: UInt32) {
     self.fboId = fboId
     self.format = format
+  }
+
+  func toSk() -> gr_gl_framebufferinfo_t {
+    var info = gr_gl_framebufferinfo_t()
+    info.fFBOID = fboId
+    info.fFormat = format
+    return info
   }
 }
 

@@ -38,7 +38,7 @@ ninja -C out/mac
 Create symlinks to the built Skia above (`include/c` and `out/mac` directories are used):
 
 ```sh
-cd Sources/CSkia/include/include
+cd Sources/CSkia/include
 ln -s /path/to/skia/include/c
 
 cd Sources/CSkia

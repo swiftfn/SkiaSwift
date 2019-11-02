@@ -104,7 +104,7 @@ public enum PathSegmentMask: Int {
   case cubic = 8  // 1 << 3
 }
 
-public enum ColorType {
+public enum ColorType: UInt32 {
   case unknown,
   alpha8,
   rgb565,

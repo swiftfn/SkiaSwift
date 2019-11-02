@@ -271,6 +271,10 @@ public struct SizeI {
   public func toPointI() -> PointI {
     return PointI(width, height)
   }
+
+  func toSize() -> Size {
+    return Size(Float(width), Float(height))
+  }
 }
 
 extension sk_rect_t {
@@ -398,11 +402,11 @@ public struct Rect {
     }
   }
 
-  public func aspectFit(size: Size) -> Rect {
+  public func aspectFit(_ size: Size) -> Rect {
     return aspectResize(size, true)
   }
 
-  public func aspectFill(size: Size) -> Rect {
+  public func aspectFill(_ size: Size) -> Rect {
     return aspectResize(size, false)
   }
 
@@ -498,16 +502,225 @@ extension sk_irect_t {
 }
 
 public struct RectI {
-  let left: Int32
-  let top: Int32
-  let right: Int32
-  let bottom: Int32
+  public static func create(size: SizeI) -> RectI {
+    return create(x: 0, y: 0, width: size.width, height: size.height)
+  }
+
+  public static func create(location: PointI, size: SizeI) -> RectI {
+    return create(x: location.x, y: location.y, width: size.width, height: size.height)
+  }
+
+  public static func create(width: Int32, height: Int32) -> RectI {
+    return RectI(0, 0, width, height)
+  }
+
+  public static func create(x: Int32, y: Int32, width: Int32, height: Int32) -> RectI {
+    return RectI(x, y, x + width, y + height)
+  }
+
+  public static func ceiling(value: Rect) -> RectI {
+    return ceiling(value: value, outwards: false)
+  }
+
+  public static func ceiling(value: Rect, outwards: Bool) -> RectI {
+    let x = Int32(outwards && value.width > 0 ? value.left.rounded(.down) : value.left.rounded(.up))
+    let y = Int32(outwards && value.height > 0 ? value.top.rounded(.down) : value.top.rounded(.up))
+    let r = Int32(outwards && value.width < 0 ? value.right.rounded(.down) : value.right.rounded(.up))
+    let b = Int32(outwards && value.height < 0 ? value.bottom.rounded(.down) : value.bottom.rounded(.up))
+    return RectI(x, y, r, b)
+  }
+
+  public static func round(value: Rect) -> RectI {
+    let x = Int32(value.left.rounded())
+    let y = Int32(value.top.rounded())
+    let r = Int32(value.right.rounded())
+    let b = Int32(value.bottom.rounded())
+    return RectI(x, y, r, b)
+  }
+
+  public static func floor(value: Rect) -> RectI {
+    return floor(value: value, inwards: false)
+  }
+
+  public static func floor(value: Rect, inwards: Bool) -> RectI {
+    let x = Int32(inwards && value.width > 0 ? value.left.rounded(.up) : value.left.rounded(.down))
+    let y = Int32(inwards && value.height > 0 ? value.top.rounded(.up) : value.top.rounded(.down))
+    let r = Int32(inwards && value.width < 0 ? value.right.rounded(.up) : value.right.rounded(.down))
+    let b = Int32(inwards && value.height < 0 ? value.bottom.rounded(.up) : value.bottom.rounded(.down))
+    return RectI(x, y, r, b)
+  }
+
+  public static func inflate(_ rect: RectI, _ x: Int32, _ y: Int32) -> RectI {
+    var r = RectI(rect.left, rect.top, rect.right, rect.bottom)
+    r.inflate(x, y)
+    return r
+  }
+
+  public static func intersect(_ a: RectI, _ b: RectI) -> RectI {
+    if !a.intersectsWithInclusive(b) {
+      return RectI(0, 0, 0, 0)
+    }
+
+    return RectI(
+      max(a.left, b.left),
+      max(a.top, b.top),
+      min(a.right, b.right),
+      min(a.bottom, b.bottom)
+    )
+  }
+
+  public static func truncate(_ value: Rect) -> RectI {
+    let x = Int32(value.left)
+    let y = Int32(value.top)
+    let r = Int32(value.right)
+    let b = Int32(value.bottom)
+    return RectI (x, y, r, b)
+  }
+
+  public static func union(_ a: RectI, _ b: RectI) -> RectI {
+    return RectI(
+      min(a.left, b.left),
+      min(a.top, b.top),
+      max(a.right, b.right),
+      max(a.bottom, b.bottom)
+    )
+  }
+
+  public var left: Int32
+  public var top: Int32
+  public var right: Int32
+  public var bottom: Int32
 
   public init(_ left: Int32, _ top: Int32, _ right: Int32, _ bottom: Int32) {
     self.left = left
     self.top = top
     self.right = right
     self.bottom = bottom
+  }
+
+  public var width: Int32 {
+    get {
+      return right - left
+    }
+  }
+
+  public var height: Int32 {
+    get {
+      return bottom - top
+    }
+  }
+
+  public var midX: Int32 {
+    get {
+      return left + width / 2
+    }
+  }
+
+  public var midY: Int32 {
+    get {
+      return top + height / 2
+    }
+  }
+
+  public var size: SizeI {
+    get {
+      return SizeI(width, height)
+    }
+    set(value) {
+      right = left + value.width
+      bottom = top + value.height
+    }
+  }
+
+  public var location: PointI {
+    get {
+      return PointI(left, top)
+    }
+    set(value) {
+      self.left = value.x
+      self.top = value.y
+    }
+  }
+
+  public var standardized: RectI {
+    get {
+      if (left > right) {
+        if (top > bottom) {
+          return RectI(right, bottom, left, top)
+        } else {
+          return RectI(right, top, left, bottom)
+        }
+      } else {
+        if (top > bottom) {
+          return RectI(left, bottom, right, top)
+        } else {
+          return RectI(left, top, right, bottom)
+        }
+      }
+    }
+  }
+
+  public func aspectFit(_ size: SizeI) -> RectI {
+  	RectI.truncate(toRect().aspectFit(size.toSize()))
+  }
+
+  public func aspectFill(_ size: SizeI) -> RectI {
+    RectI.truncate(toRect().aspectFill(size.toSize()))
+  }
+
+  public mutating func inflate(_ size: SizeI) {
+    inflate(size.width, size.height)
+  }
+
+  public mutating func inflate(_ width: Int32, _ height: Int32) {
+    left -= width
+    top -= height
+    right += width
+    bottom += height
+  }
+
+  public mutating func intersect(_ rect: RectI) {
+    self = RectI.intersect(self, rect)
+  }
+
+  public func intersectsWith(_ rect: RectI) -> Bool {
+    return (left < rect.right) && (right > rect.left) && (top < rect.bottom) && (bottom > rect.top)
+  }
+
+  public func intersectsWithInclusive(_ rect: RectI) -> Bool {
+    return (left <= rect.right) && (right >= rect.left) && (top <= rect.bottom) && (bottom >= rect.top)
+  }
+
+  public mutating func union(_ rect: RectI) {
+    self = RectI.union(self, rect)
+  }
+
+  public func contains(_ x: Int32, _ y: Int32) -> Bool {
+    return (x >= left) && (x < right) && (y >= top) && (y < bottom)
+  }
+
+  public func contains(_ pt: PointI) -> Bool {
+    return contains(pt.x, pt.y)
+  }
+
+  public func contains(_ rect: RectI) -> Bool {
+    return (left <= rect.left) && (right >= rect.right) &&
+    (top <= rect.top) && (bottom >= rect.bottom)
+  }
+
+  public mutating func offset(_ x: Int32, _ y: Int32) {
+    left += x
+    top += y
+    right += x
+    bottom += y
+  }
+
+  public mutating func offset(_ pos: PointI) {
+    offset(pos.x, pos.y)
+  }
+
+  func toRect() -> Rect {
+    return Rect(Float(left), Float(top), Float(right), Float(bottom))
   }
 
   func toSk() -> sk_irect_t {

@@ -2,20 +2,20 @@ import CSkia
 
 public class Image {
   public static func rasterCopy(imageInfo: ImageInfo, pixels: UnsafeRawPointer, rowBytes: Int) -> Image {
-    let raw = sk_image_new_raster_copy(&imageInfo.raw, pixels, rowBytes)
-    return Image(raw!)
+    let handle = sk_image_new_raster_copy(&imageInfo.info, pixels, rowBytes)
+    return Image(handle!)
   }
 
   public static func fromEncoded(encoded: ImageData, subset: RectI) -> Image {
     var r = subset.toSk()
-    let raw = sk_image_new_from_encoded(encoded.raw, &r)
-    return Image(raw!)
+    let handle = sk_image_new_from_encoded(encoded.handle, &r)
+    return Image(handle!)
   }
 
-  var raw: OpaquePointer
+  var handle: OpaquePointer
 
-  init(_ raw: OpaquePointer) {
-    self.raw = raw
+  init(_ handle: OpaquePointer) {
+    self.handle = handle
   }
 
   deinit {
@@ -23,33 +23,33 @@ public class Image {
   }
 
   func ref() {
-    sk_image_ref(raw)
+    sk_image_ref(handle)
   }
 
   func unref() {
-    sk_image_unref(raw)
+    sk_image_unref(handle)
   }
 
   public func encode() -> ImageData {
-    let rawData = sk_image_encode(raw)
-    return ImageData(rawData!)
+    let dataHandle = sk_image_encode(handle)
+    return ImageData(dataHandle!)
   }
 
   public var width: Int32 {
     get {
-      return sk_image_get_width(raw)
+      return sk_image_get_width(handle)
     }
   }
 
   public var height: Int32 {
     get {
-      return sk_image_get_height(raw)
+      return sk_image_get_height(handle)
     }
   }
 
   public var uniqueId: UInt32 {
     get {
-      return sk_image_get_unique_id(raw)
+      return sk_image_get_unique_id(handle)
     }
   }
 }

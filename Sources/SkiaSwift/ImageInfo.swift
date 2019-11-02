@@ -1,36 +1,36 @@
 import CSkia
 
 public class ImageInfo {
-  var raw = sk_imageinfo_t()
+  var info = sk_imageinfo_t()
 
   public init(_ width: Int32, _ height: Int32, _ colorType: sk_colortype_t, _ alphaType: sk_alphatype_t) {
-    raw.width = width
-    raw.height = height
-    raw.colorType = colorType
-    raw.alphaType = alphaType
+    info.width = width
+    info.height = height
+    info.colorType = colorType
+    info.alphaType = alphaType
   }
 
   public var width: Int32 {
     get {
-      return raw.width
+      return info.width
     }
   }
 
   public var height: Int32 {
     get {
-      return raw.height
+      return info.height
     }
   }
 
   public var colorType: sk_colortype_t {
     get {
-      return raw.colorType
+      return info.colorType
     }
   }
 
   public var alphaType: sk_alphatype_t {
     get {
-      return raw.alphaType
+      return info.alphaType
     }
   }
 }

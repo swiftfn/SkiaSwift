@@ -2,36 +2,36 @@ import CSkia
 
 public class Surface {
   public static func raster(_ imageInfo: ImageInfo) -> Surface {
-    let raw = sk_surface_new_raster(&imageInfo.raw, 0, nil)
-    return Surface(raw!)
+    let handle = sk_surface_new_raster(&imageInfo.info, 0, nil)
+    return Surface(handle!)
   }
 
   public static func rasterDirect(_ imageInfo: ImageInfo, _ pixels: UnsafeMutableRawPointer, _ rowBytes: Int) -> Surface {
-    let raw = sk_surface_new_raster_direct(&imageInfo.raw, pixels, rowBytes, nil, nil, nil)
-    return Surface(raw!)
+    let handle = sk_surface_new_raster_direct(&imageInfo.info , pixels, rowBytes, nil, nil, nil)
+    return Surface(handle!)
   }
 
-  var raw: OpaquePointer
+  var handle: OpaquePointer
 
-  init(_ raw: OpaquePointer) {
-    self.raw = raw
+  init(_ handle: OpaquePointer) {
+    self.handle = handle
   }
 
   deinit {
-    sk_surface_unref(raw)
+    sk_surface_unref(handle)
   }
 
   public var canvas: Canvas {
     get {
-      let rawCanvas = sk_surface_get_canvas(raw)
-      return Canvas(raw: rawCanvas!)
+      let canvasHandle = sk_surface_get_canvas(handle)
+      return Canvas(handle: canvasHandle!)
     }
   }
 
   public var snapshot: Image {
     get {
-      let rawImg = sk_surface_new_image_snapshot(raw)
-      return Image(rawImg!)
+      let imgHandle = sk_surface_new_image_snapshot(handle)
+      return Image(imgHandle!)
     }
   }
 }

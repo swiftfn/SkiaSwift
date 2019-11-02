@@ -2,19 +2,19 @@ import CSkia
 
 public class ImageData {
   public static func empty() -> ImageData {
-    let raw = sk_data_new_empty()
-    return ImageData(raw!)
+    let handle = sk_data_new_empty()
+    return ImageData(handle!)
   }
 
   public static func copy(src: UnsafeRawPointer, length: Int) -> ImageData {
-    let raw = sk_data_new_with_copy(src, length)
-    return ImageData(raw!)
+    let handle = sk_data_new_with_copy(src, length)
+    return ImageData(handle!)
   }
 
-  var raw: OpaquePointer
+  var handle: OpaquePointer
 
-  init(_ raw: OpaquePointer) {
-    self.raw = raw
+  init(_ handle: OpaquePointer) {
+    self.handle = handle
   }
 
   deinit {
@@ -22,27 +22,27 @@ public class ImageData {
   }
 
   func ref() {
-    sk_data_ref(raw)
+    sk_data_ref(handle)
   }
 
   func unref() {
-    sk_data_unref(raw)
+    sk_data_unref(handle)
   }
 
   public func subset(src: ImageData, offset: Int, length: Int) -> ImageData {
-    let raw = sk_data_new_subset(src.raw, offset, length)
-    return ImageData(raw!)
+    let handle = sk_data_new_subset(src.handle, offset, length)
+    return ImageData(handle!)
   }
 
   public var size: Int {
     get {
-      return sk_data_get_size(raw)
+      return sk_data_get_size(handle)
     }
   }
 
   public var data: UnsafeRawPointer {
     get {
-      return sk_data_get_data(raw)
+      return sk_data_get_data(handle)
     }
   }
 }

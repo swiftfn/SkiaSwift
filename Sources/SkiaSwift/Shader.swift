@@ -8,8 +8,8 @@ public class Shader {
     tileMode: sk_shader_tilemode_t
   ) -> Shader {
     var points = [point0.toSk(), point1.toSk()]
-    let raw = sk_shader_new_linear_gradient(&points, &colors, nil, Int32(colors.count), tileMode, nil)
-    return Shader(raw!)
+    let handle = sk_shader_new_linear_gradient(&points, &colors, nil, Int32(colors.count), tileMode, nil)
+    return Shader(handle!)
   }
 
   public static func radialGradient(
@@ -19,8 +19,8 @@ public class Shader {
     tileMode: sk_shader_tilemode_t
   ) -> Shader {
     var ccenter = center.toSk()
-    let raw = sk_shader_new_radial_gradient(&ccenter, radius, &colors, nil, Int32(colors.count), tileMode, nil)
-    return Shader(raw!)
+    let handle = sk_shader_new_radial_gradient(&ccenter, radius, &colors, nil, Int32(colors.count), tileMode, nil)
+    return Shader(handle!)
   }
 
   public static func sweepGradient(
@@ -32,8 +32,8 @@ public class Shader {
     endAngle: Float
   ) -> Shader {
     var ccenter = center.toSk()
-    let raw = sk_shader_new_sweep_gradient(&ccenter, &colors, nil, Int32(colors.count), tileMode, startAngle, endAngle, nil)
-    return Shader(raw!)
+    let handle = sk_shader_new_sweep_gradient(&ccenter, &colors, nil, Int32(colors.count), tileMode, startAngle, endAngle, nil)
+    return Shader(handle!)
   }
 
   public static func conicalGradient(
@@ -44,20 +44,20 @@ public class Shader {
   ) -> Shader {
     var cstart = start.toSk()
     var cend = end.toSk()
-    let raw = sk_shader_new_two_point_conical_gradient(
+    let handle = sk_shader_new_two_point_conical_gradient(
         &cstart, startRadius,
         &cend, endRadius,
         &colors, nil, Int32(colors.count),
         tileMode,
         nil
     )
-    return Shader(raw!)
+    return Shader(handle!)
   }
 
-  var raw: OpaquePointer
+  var handle: OpaquePointer
 
-  init(_ raw: OpaquePointer) {
-    self.raw = raw
+  init(_ handle: OpaquePointer) {
+    self.handle = handle
   }
 
   deinit {
@@ -65,10 +65,10 @@ public class Shader {
   }
 
   func ref() {
-    sk_shader_ref(raw)
+    sk_shader_ref(handle)
   }
 
   func unref() {
-    sk_shader_unref(raw)
+    sk_shader_unref(handle)
   }
 }

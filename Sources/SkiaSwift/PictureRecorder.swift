@@ -2,28 +2,28 @@ import CSkia
 
 public class PictureRecorder {
   static func new() -> PictureRecorder {
-    let raw = sk_picture_recorder_new()
-    return PictureRecorder(raw!)
+    let handle = sk_picture_recorder_new()
+    return PictureRecorder(handle!)
   }
 
-  var raw: OpaquePointer
+  var handle: OpaquePointer
 
-  init(_ raw: OpaquePointer) {
-    self.raw = raw
+  init(_ handle: OpaquePointer) {
+    self.handle = handle
   }
 
   deinit {
-    sk_picture_recorder_delete(raw)
+    sk_picture_recorder_delete(handle)
   }
 
   public func beginRecording(rect: Rect) -> Canvas {
     var r = rect.toSk()
-    let rawCanvas = sk_picture_recorder_begin_recording(raw, &r)
-    return Canvas(raw: rawCanvas!)
+    let canvasHandle = sk_picture_recorder_begin_recording(handle, &r)
+    return Canvas(handle: canvasHandle!)
   }
 
   public func endRecording() -> Picture {
-    let rawPicture = sk_picture_recorder_end_recording(raw)
-    return Picture(rawPicture!)
+    let pictureHandle = sk_picture_recorder_end_recording(handle)
+    return Picture(pictureHandle!)
   }
 }

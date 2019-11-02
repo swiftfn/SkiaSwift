@@ -13,9 +13,9 @@ func makeSurface(_ w: Int32, _ h: Int32) -> Surface {
 func emitPng(_ path: String, _ surface: Surface) {
     let image = surface.snapshot
     let encoded = image.encode()
-    let raw = encoded.data
+    let bytes = encoded.data
     let size = encoded.size
-    let data = Data(bytes: raw, count: size)
+    let data = Data(bytes: bytes, count: size)
     try? data.write(to: URL(fileURLWithPath: path))
 }
 

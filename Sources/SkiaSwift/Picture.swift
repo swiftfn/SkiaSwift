@@ -1,10 +1,10 @@
 import CSkia
 
 public class Picture {
-  var raw: OpaquePointer
+  var handle: OpaquePointer
 
-  init(_ raw: OpaquePointer) {
-    self.raw = raw
+  init(_ handle: OpaquePointer) {
+    self.handle = handle
   }
 
   deinit {
@@ -12,16 +12,16 @@ public class Picture {
   }
 
   func ref() {
-    sk_picture_ref(raw)
+    sk_picture_ref(handle)
   }
 
   func unref() {
-    sk_picture_unref(raw)
+    sk_picture_unref(handle)
   }
 
   public var uniqueId: UInt32 {
     get {
-      return sk_picture_get_unique_id(raw)
+      return sk_picture_get_unique_id(handle)
     }
   }
 }

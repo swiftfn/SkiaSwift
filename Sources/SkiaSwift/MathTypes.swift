@@ -281,19 +281,47 @@ extension sk_rect_t {
 
 public struct Rect {
   public static func create(location: Point, size: Size) -> Rect {
-    return create(location.x, location.y, size.width, size.height)
+    return create(x: location.x, y: location.y, width: size.width, height: size.height)
   }
 
   public static func create(size: Size) -> Rect {
-    return create(Point(0, 0), size)
+    return create(location: Point(0, 0), size: size)
   }
 
   public static func create(width: Float, height: Float) -> Rect {
-    return Rect(0, 0, x, y)
+    return Rect(0, 0, width, height)
   }
 
   public static func create(x: Float, y: Float, width: Float, height: Float) -> Rect {
     return Rect(x, y, x + width, y + height)
+  }
+
+  public static func inflate(_ rect: Rect, _ x: Float, _ y: Float) -> Rect {
+    var r = Rect(rect.left, rect.top, rect.right, rect.bottom)
+    r.inflate(x, y)
+    return r
+  }
+
+  public static func intersect(_ a: Rect, _ b: Rect) -> Rect {
+    if (!a.intersectsWithInclusive(b)) {
+      return Rect(0, 0, 0, 0)
+    }
+
+    return Rect(
+      max(a.left, b.left),
+      max(a.top, b.top),
+      min(a.right, b.right),
+      min(a.bottom, b.bottom)
+    )
+  }
+
+  public static func union(_ a: Rect, _ b: Rect) -> Rect {
+		return Rect(
+      min(a.left, b.left),
+      min(a.top, b.top),
+      max(a.right, b.right),
+      max(a.bottom, b.bottom)
+    )
   }
 
   public var left: Float
@@ -378,13 +406,73 @@ public struct Rect {
     return aspectResize(size, false)
   }
 
-  private func aspectResize(size: Size, fit: Bool) -> Rect {
+  public mutating func inflate(_ size: Size) {
+    inflate(size.width, size.height)
+  }
+
+  public mutating func inflate(_ x: Float, _ y: Float) {
+    left -= x
+    top -= y
+    right += x
+    bottom += y
+  }
+
+  public mutating func intersect(rect: Rect) {
+	  self = Rect.intersect(self, rect)
+  }
+
+  public func intersectsWith(_ rect: Rect) -> Bool {
+    return (left < rect.right) && (right > rect.left) && (top < rect.bottom) && (bottom > rect.top)
+  }
+
+  public func intersectsWithInclusive(_ rect: Rect) -> Bool {
+    return (left <= rect.right) && (right >= rect.left) && (top <= rect.bottom) && (bottom >= rect.top)
+  }
+
+  public mutating func union(rect: Rect) {
+    self = Rect.union(self, rect)
+  }
+
+  public func contains(_ x: Float, _ y: Float) -> Bool {
+    return (x >= left) && (x < right) && (y >= top) && (y < bottom)
+  }
+
+  public func contains(_ pt: Point) -> Bool {
+    return contains(pt.x, pt.y)
+  }
+
+  public func contains(_ rect: Rect) -> Bool {
+    return (left <= rect.left) && (right >= rect.right) &&
+      (top <= rect.top) && (bottom >= rect.bottom)
+  }
+
+  func toSk() -> sk_rect_t {
+    var r = sk_rect_t()
+    r.left = left
+    r.top = top
+    r.right = right
+    r.bottom = bottom
+    return r
+  }
+
+  public mutating func offset(_ x: Float, _ y: Float) {
+    left += x
+    top += y
+    right += x
+    bottom += y
+  }
+
+  public mutating func offset(_ pos: Point) {
+    offset(pos.x, pos.y)
+  }
+
+  private func aspectResize(_ size: Size, _ fit: Bool) -> Rect {
     if size.width == 0 || size.height == 0 || width == 0 || height == 0 {
-      return create(midX, midY, 0, 0)
+      return Rect.create(x: midX, y: midY, width: 0, height: 0)
     }
 
-    let aspectWidth = size.width
-    let aspectHeight = size.height
+    var aspectWidth = size.width
+    var aspectHeight = size.height
     let imgAspect = aspectWidth / aspectHeight
     let fullRectAspect = width / height
 
@@ -399,16 +487,7 @@ public struct Rect {
     let aspectLeft = midX - (aspectWidth / 2)
     let aspectTop = midY - (aspectHeight / 2)
 
-    return create(aspectLeft, aspectTop, aspectWidth, aspectHeight)
-  }
-
-  func toSk() -> sk_rect_t {
-    var r = sk_rect_t()
-    r.left = left
-    r.top = top
-    r.right = right
-    r.bottom = bottom
-    return r
+    return Rect.create(x: aspectLeft, y: aspectTop, width: aspectWidth, height: aspectHeight)
   }
 }
 

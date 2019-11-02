@@ -1,16 +1,11 @@
 import CSkia
 
 public class Texture {
-  public static func newGl(width: Int32, height: Int32, mipmapped: Bool, glInfo: gr_gl_textureinfo_t) -> Texture {
-    var info = glInfo
-    let raw = gr_backendtexture_new_gl(width, height, mipmapped, &info)
-    return Texture(raw!)
-  }
-
   var raw: OpaquePointer
 
-  init(_ raw: OpaquePointer) {
-    self.raw = raw
+  init(width: Int32, height: Int32, mipmapped: Bool, glInfo: GlTextureInfo) {
+    var info = glInfo.toSk()
+    self.raw = gr_backendtexture_new_gl(width, height, mipmapped, &info)!
   }
 
   deinit {
@@ -21,8 +16,10 @@ public class Texture {
     gr_backendtexture_delete(raw)
   }
 
-  public func isValid() -> Bool {
-    return gr_backendtexture_is_valid(raw)
+  var valid: Bool {
+    get {
+      return gr_backendtexture_is_valid(raw)
+    }
   }
 
   var width: Int32 {
@@ -43,17 +40,29 @@ public class Texture {
     }
   }
 
-  var backend: gr_backend_t {
+  var backend: Backend {
     get {
-      return gr_backendtexture_get_backend(raw)
+      return gr_backendtexture_get_backend(raw).toSwift()
     }
   }
 
-  var glInfo: gr_gl_textureinfo_t {
+  var size: SizeI {
+    get {
+      return SizeI(width: width, height: height)
+    }
+  }
+
+  var rect: RectI {
+    get {
+      return RectI(0, 0, width, height)
+    }
+  }
+
+  var glInfo: GlTextureInfo {
     get {
       var glInfo = gr_gl_textureinfo_t()
       gr_backendtexture_get_gl_textureinfo(raw, &glInfo)
-      return glInfo
+      return glInfo.toSwift()
     }
   }
 }

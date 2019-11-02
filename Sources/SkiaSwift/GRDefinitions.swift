@@ -93,10 +93,24 @@ public struct GlFramebufferInfo {
   }
 }
 
+extension gr_gl_textureinfo_t {
+  func toSwift() -> GlTextureInfo {
+    return GlTextureInfo(target: fTarget, id: fID, format: fFormat)
+  }
+}
+
 public struct GlTextureInfo {
-  var target: UInt
-  var id: UInt
-  var format: UInt
+  let target: UInt32
+  let id: UInt32
+  let format: UInt32
+
+  func toSk() -> gr_gl_textureinfo_t {
+    var info = gr_gl_textureinfo_t()
+    info.fTarget = target
+    info.fID = id
+    info.fFormat = format
+    return info
+  }
 }
 
 extension ColorType {

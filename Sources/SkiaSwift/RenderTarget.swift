@@ -61,7 +61,7 @@ public class RenderTarget {
 
   var size: SizeI {
     get {
-      return SizeI(width: width, height: height)
+      return SizeI(width, height)
     }
   }
 

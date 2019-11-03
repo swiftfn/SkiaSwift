@@ -23,25 +23,14 @@ public enum PixelConfig {
   rgbaHalf
 }
 
-extension gr_backend_t {
-  func toSwift() -> Backend {
-    switch (self) {
-      case METAL_GR_BACKEND:
-        return Backend.metal
-      case OPENGL_GR_BACKEND:
-        return Backend.openGl
-      case VULKAN_GR_BACKEND:
-        return Backend.vulkan
-      default:
-        fatalError("Unknown backend")
-    }
-  }
-}
-
-public enum Backend {
+public enum Backend: UInt32 {
   case metal,
   openGl,
   vulkan
+
+  init(_ backend: gr_backend_t) {
+    self.init(rawValue: backend.rawValue)!
+  }
 }
 
 public enum GlBackendState: UInt32 {
@@ -66,50 +55,70 @@ public enum BackendState: UInt32 {
   all       = 0xffffffff
 }
 
-extension gr_gl_framebufferinfo_t {
-  func toSwift() -> GlFramebufferInfo {
-    return GlFramebufferInfo(fboId: fFBOID, format: fFormat)
-  }
-}
-
 public struct GlFramebufferInfo {
-  var fboId: UInt32  // framebuffer object ID
-  var format: UInt32 = 0
+  var handle = gr_gl_framebufferinfo_t()
+
+  // framebuffer object ID
+  public var fboId: UInt32 {
+    get {
+      return handle.fFBOID
+    }
+    set(value) {
+      handle.fFBOID = value
+    }
+  }
+
+  var format: UInt32 {
+    get {
+      return handle.fFormat
+    }
+    set(value) {
+      handle.fFormat = value
+    }
+  }
+
+  init() {
+  }
 
   public init(fboId: UInt32) {
     self.fboId = fboId
+    self.format = 0
   }
 
   public init(fboId: UInt32, format: UInt32) {
     self.fboId = fboId
     self.format = format
   }
-
-  func toSk() -> gr_gl_framebufferinfo_t {
-    var info = gr_gl_framebufferinfo_t()
-    info.fFBOID = fboId
-    info.fFormat = format
-    return info
-  }
-}
-
-extension gr_gl_textureinfo_t {
-  func toSwift() -> GlTextureInfo {
-    return GlTextureInfo(target: fTarget, id: fID, format: fFormat)
-  }
 }
 
 public struct GlTextureInfo {
-  let target: UInt32
-  let id: UInt32
-  let format: UInt32
+  var handle = gr_gl_textureinfo_t()
 
-  func toSk() -> gr_gl_textureinfo_t {
-    var info = gr_gl_textureinfo_t()
-    info.fTarget = target
-    info.fID = id
-    info.fFormat = format
-    return info
+  var target: UInt32 {
+    get {
+      return handle.fTarget
+    }
+    set(value) {
+      handle.fTarget = value
+    }
+  }
+
+  var id: UInt32 {
+    get {
+      handle.fID
+    }
+    set(value) {
+      handle.fID = value
+    }
+  }
+
+  var format: UInt32 {
+    get {
+      handle.fFormat
+    }
+    set(value) {
+      handle.fFormat = value
+    }
   }
 }
 

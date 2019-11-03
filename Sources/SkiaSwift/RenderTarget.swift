@@ -4,7 +4,7 @@ public class RenderTarget {
   var handle: OpaquePointer
 
   public init(width: Int32, height: Int32, sampleCount: Int32, stencilBits: Int32, glInfo: GlFramebufferInfo) {
-    var info = glInfo.toSk()
+    var info = glInfo.handle
     let handle = gr_backendrendertarget_new_gl(
       width,
       height,
@@ -51,7 +51,7 @@ public class RenderTarget {
 
   var backend: Backend {
     get {
-      return gr_backendrendertarget_get_backend(handle).toSwift()
+      return Backend(gr_backendrendertarget_get_backend(handle))
     }
   }
 
@@ -69,9 +69,9 @@ public class RenderTarget {
 
   var glInfo: GlFramebufferInfo {
     get {
-      var glInfo = gr_gl_framebufferinfo_t()
-      gr_backendrendertarget_get_gl_framebufferinfo(handle, &glInfo)
-      return glInfo.toSwift()
+      var info = GlFramebufferInfo()
+      gr_backendrendertarget_get_gl_framebufferinfo(handle, &info.handle)
+      return info
     }
   }
 }

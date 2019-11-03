@@ -60,7 +60,7 @@ public class Context {
 
   var backend: Backend {
     get {
-      return gr_context_get_backend(handle).toSwift()
+      return Backend(gr_context_get_backend(handle))
     }
   }
 }

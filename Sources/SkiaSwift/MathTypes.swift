@@ -60,8 +60,25 @@ public struct Point {
     return Point(pt.x - Float(sz.width), pt.y - Float(sz.width))
   }
 
-  public var x: Float
-  public var y: Float
+  var handle = sk_point_t()
+
+  public var x: Float {
+    get {
+      return handle.x
+    }
+    set(value) {
+      handle.x = value
+    }
+  }
+
+  public var y: Float {
+    get {
+      return handle.y
+    }
+    set(value) {
+      handle.y = value
+    }
+  }
 
   init(_ x: Float, _ y: Float) {
     self.x = x
@@ -88,13 +105,6 @@ public struct Point {
   public mutating func offset(_ dx: Float, _ dy: Float) {
     x += dx
     y += dy
-  }
-
-  func toSk() -> sk_point_t {
-    var p = sk_point_t()
-    p.x = x
-    p.y = y
-    return p
   }
 }
 
@@ -277,12 +287,6 @@ public struct SizeI {
   }
 }
 
-extension sk_rect_t {
-  func toSwift() -> Rect {
-    return Rect(left, top, right, bottom)
-  }
-}
-
 public struct Rect {
   public static func create(location: Point, size: Size) -> Rect {
     return create(x: location.x, y: location.y, width: size.width, height: size.height)
@@ -328,10 +332,47 @@ public struct Rect {
     )
   }
 
-  public var left: Float
-  public var top: Float
-  public var right: Float
-  public var bottom: Float
+  var handle = sk_rect_t()
+
+  public var left: Float {
+    get {
+      return handle.left
+    }
+    set(value) {
+      handle.left = value
+    }
+  }
+
+  public var top: Float {
+    get {
+      return handle.top
+    }
+    set(value) {
+      handle.top = value
+    }
+  }
+
+  public var right: Float {
+    get {
+      return handle.right
+    }
+    set(value) {
+      handle.right = value
+    }
+  }
+
+  public var bottom: Float {
+    get {
+      return handle.bottom
+    }
+    set(value) {
+      handle.bottom = value
+    }
+  }
+
+  init() {
+    self.init(0, 0, 0, 0)
+  }
 
   public init(_ left: Float, _ top: Float, _ right: Float, _ bottom: Float) {
     self.left = left
@@ -450,15 +491,6 @@ public struct Rect {
       (top <= rect.top) && (bottom >= rect.bottom)
   }
 
-  func toSk() -> sk_rect_t {
-    var r = sk_rect_t()
-    r.left = left
-    r.top = top
-    r.right = right
-    r.bottom = bottom
-    return r
-  }
-
   public mutating func offset(_ x: Float, _ y: Float) {
     left += x
     top += y
@@ -492,12 +524,6 @@ public struct Rect {
     let aspectTop = midY - (aspectHeight / 2)
 
     return Rect.create(x: aspectLeft, y: aspectTop, width: aspectWidth, height: aspectHeight)
-  }
-}
-
-extension sk_irect_t {
-  func toSwift() -> RectI {
-    return RectI(left, top, right, bottom)
   }
 }
 
@@ -586,10 +612,43 @@ public struct RectI {
     )
   }
 
-  public var left: Int32
-  public var top: Int32
-  public var right: Int32
-  public var bottom: Int32
+  var handle = sk_irect_t()
+
+  public var left: Int32 {
+    get {
+      return handle.left
+    }
+    set(value) {
+      handle.left = value
+    }
+  }
+
+  public var top: Int32 {
+    get {
+      return handle.top
+    }
+    set(value) {
+      handle.top = value
+    }
+  }
+
+  public var right: Int32 {
+    get {
+      return handle.right
+    }
+    set(value) {
+      handle.right = value
+    }
+  }
+
+  public var bottom: Int32 {
+    get {
+      return handle.bottom
+    }
+    set(value) {
+      handle.bottom = value
+    }
+  }
 
   public init(_ left: Int32, _ top: Int32, _ right: Int32, _ bottom: Int32) {
     self.left = left
@@ -721,14 +780,5 @@ public struct RectI {
 
   func toRect() -> Rect {
     return Rect(Float(left), Float(top), Float(right), Float(bottom))
-  }
-
-  func toSk() -> sk_irect_t {
-    var r = sk_irect_t()
-    r.left = left
-    r.top = top
-    r.right = right
-    r.bottom = bottom
-    return r
   }
 }

@@ -10,7 +10,7 @@ public struct Canvas {
 
   public func saveLayer(_ rect: Rect?, _ paint: Paint?) {
     if let r = rect {
-      var cr = r.toSk()
+      var cr = r.handle
       sk_canvas_save_layer(handle, &cr, paint?.handle)
     } else {
       sk_canvas_save_layer(handle, nil, paint?.handle)
@@ -52,7 +52,7 @@ public struct Canvas {
   }
 
   public func drawRect(_ rect: Rect, _ paint: Paint) {
-    var r = rect.toSk()
+    var r = rect.handle
     sk_canvas_draw_rect(handle, &r, paint.handle)
   }
 
@@ -61,7 +61,7 @@ public struct Canvas {
   }
 
   public func drawOval(_ rect: Rect, _ paint: Paint) {
-    var r = rect.toSk()
+    var r = rect.handle
     sk_canvas_draw_oval(handle, &r, paint.handle)
   }
 
@@ -74,8 +74,8 @@ public struct Canvas {
   }
 
   public func drawImageRect(_ image: Image, _ src: Rect, _ dst: Rect, _ paint: Paint) {
-    var s = src.toSk()
-    var d = dst.toSk()
+    var s = src.handle
+    var d = dst.handle
     sk_canvas_draw_image_rect(handle, image.handle, &s, &d, paint.handle)
   }
 

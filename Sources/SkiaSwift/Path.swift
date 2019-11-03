@@ -49,23 +49,23 @@ public class Path {
 
   @discardableResult
   public func addRect(_ rect: Rect, _ direction: sk_path_direction_t) -> Path {
-    var r = rect.toSk()
+    var r = rect.handle
     sk_path_add_rect(handle, &r, direction)
     return self
   }
 
   @discardableResult
   public func addOval(_ rect: Rect, _ direction: sk_path_direction_t) -> Path {
-    var r = rect.toSk()
+    var r = rect.handle
     sk_path_add_oval(handle, &r, direction)
     return self
   }
 
   public var bounds: Rect {
     get {
-      var rect = sk_rect_t()
-      sk_path_get_bounds(handle, &rect)
-      return rect.toSwift()
+      var rect = Rect()
+      sk_path_get_bounds(handle, &rect.handle)
+      return rect
     }
   }
 }

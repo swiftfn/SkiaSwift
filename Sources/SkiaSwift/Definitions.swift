@@ -112,7 +112,7 @@ public typealias CodecScanlineOrder = sk_codec_scanline_order_t
 public typealias TransferFunctionBehavior = sk_transfer_function_behavior_t
 
 struct CodecOptionsInternal {
-  var fZeroInitialized: ZeroInitialized
+  var fZeroInitialized: CodecZeroInitialized
   var fSubset: RectI
   var fFrameIndex: Int
   var fPriorFrame: Int
@@ -120,19 +120,19 @@ struct CodecOptionsInternal {
 }
 
 public struct CodecOptions {
-  public static let defaultOptions = CodecOptions(zeroInitialized: .no)
+  public static let defaultOptions = CodecOptions(zeroInitialized: NO_SK_CODEC_ZERO_INITIALIZED)
 
-  public var zeroInitialized: ZeroInitialized = .no
+  public var zeroInitialized: CodecZeroInitialized = NO_SK_CODEC_ZERO_INITIALIZED
   public var subset: RectI? = nil
   public var frameIndex: Int = 0
   public var priorFrame: Int = -1
-  public var premulBehavior: TransferFunctionBehavior = .respect
+  public var premulBehavior: TransferFunctionBehavior = RESPECT_SK_TRANSFER_FUNCTION_BEHAVIOR
 
-  public init(zeroInitialized: ZeroInitialized) {
+  public init(zeroInitialized: CodecZeroInitialized) {
     self.zeroInitialized = zeroInitialized
   }
 
-  public init(zeroInitialized: ZeroInitialized, subset: RectI) {
+  public init(zeroInitialized: CodecZeroInitialized, subset: RectI) {
     self.zeroInitialized = zeroInitialized
     self.subset = subset
   }
@@ -410,7 +410,7 @@ public enum PngEncoderFilterFlags: Int {
 public struct PngEncoderOptions {
   var filterFlags: PngEncoderFilterFlags
   var zLibLevel: Int
-  var unpremulBehavior: TransferFunctionBehavior = .respect
+  var unpremulBehavior: TransferFunctionBehavior = RESPECT_SK_TRANSFER_FUNCTION_BEHAVIOR
   // TODO: get and set comments
 
   public static let defaultOptions = PngEncoderOptions(
@@ -444,7 +444,7 @@ public struct JpegEncoderOptions {
   var quality: Int
   var downsample: JpegEncoderDownsample
   var alphaOption: JpegEncoderAlphaOption
-  var blendBehavior: TransferFunctionBehavior = .respect
+  var blendBehavior: TransferFunctionBehavior = RESPECT_SK_TRANSFER_FUNCTION_BEHAVIOR
 
   public static let defaultOptions = JpegEncoderOptions(
     quality: 100,
@@ -472,7 +472,7 @@ public enum WebpEncoderCompression {
 public struct WebpEncoderOptions {
   var compression: WebpEncoderCompression
   var quality: Float
-  var unpremulBehavior: TransferFunctionBehavior = .respect
+  var unpremulBehavior: TransferFunctionBehavior = RESPECT_SK_TRANSFER_FUNCTION_BEHAVIOR
 
   public static let defaultOptions = WebpEncoderOptions(
     compression: .lossy,

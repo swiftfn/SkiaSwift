@@ -1,6 +1,8 @@
 import CSkia
 
-public class Matrix {
+public typealias Matrix = sk_matrix_t
+
+extension Matrix {
   static func sdot(_ a: Float, _ b: Float, _ c: Float, _ d: Float) -> Float {
     return a * b + c * d
   }
@@ -10,7 +12,7 @@ public class Matrix {
   }
 
   public static func makeIdentity() -> Matrix {
-    let m = Matrix()
+    var m = Matrix()
     m.scaleX = 1
     m.scaleY = 1
     m.persp2 = 1
@@ -22,7 +24,7 @@ public class Matrix {
       return makeIdentity()
     }
 
-    let m = Matrix()
+    var m = Matrix()
     m.scaleX = sx
     m.scaleY = sy
     m.persp2 = 1
@@ -40,7 +42,7 @@ public class Matrix {
     let tx = pivotx - sx * pivotx
     let ty = pivoty - sy * pivoty
 
-    let m = Matrix()
+    var m = Matrix()
     m.scaleX = sx
     m.scaleY = sy
     m.transX = tx
@@ -54,7 +56,7 @@ public class Matrix {
       return makeIdentity()
     }
 
-    let m = Matrix ()
+    var m = Matrix ()
     m.scaleX = 1
     m.scaleY = 1
     m.transX = dx
@@ -144,7 +146,7 @@ public class Matrix {
   }
 
   public static func makeSkew(_ sx: Float, _ sy: Float) -> Matrix {
-    let m = Matrix()
+    var m = Matrix()
 
     m.scaleX = 1
     m.skewX = sx
@@ -161,24 +163,27 @@ public class Matrix {
     return m
   }
 
-  public static func concat(_ target: Matrix, _ first: Matrix, _ second: Matrix) {
-    sk_matrix_concat(&target.handle, &first.handle, &second.handle)
+  public static func concat(_ target: inout Matrix, _ first: Matrix, _ second: Matrix) {
+    var f = first
+    var s = second
+    sk_matrix_concat(&target, &f, &s)
   }
 
-  public static func preConcat(_ target: Matrix, _ matrix: Matrix) {
-    sk_matrix_pre_concat(&target.handle, &matrix.handle)
+  public static func preConcat(_ target: inout Matrix, _ matrix: Matrix) {
+    var m = matrix
+    sk_matrix_pre_concat(&target, &m)
   }
 
-  public static func postConcat(_ target: Matrix, _ matrix: Matrix) {
-    sk_matrix_post_concat(&target.handle, &matrix.handle)
+  public static func postConcat(_ target: inout Matrix, _ matrix: Matrix) {
+    var m = matrix
+    sk_matrix_post_concat(&target, &m)
   }
 
   public static func mapRect(_ matrix: Matrix, _ dest: inout Rect, _ source: Rect) {
+    var m = matrix
     var s = source
-    sk_matrix_map_rect(&matrix.handle, &dest, &s)
+    sk_matrix_map_rect(&m, &dest, &s)
   }
-
-  var handle = sk_matrix_t()
 
   private class Indices {
     static let scaleX = 0
@@ -200,86 +205,83 @@ public class Matrix {
 
   public var scaleX: Float {
     get {
-      return handle.mat.0
+      return mat.0
     }
     set(value) {
-      handle.mat.0 = value
+      mat.0 = value
     }
   }
 
   public var skewX: Float {
     get {
-      return handle.mat.1
+      return mat.1
     }
     set(value) {
-      handle.mat.1 = value
+      mat.1 = value
     }
   }
 
   public var transX: Float {
     get {
-      return handle.mat.2
+      return mat.2
     }
     set(value) {
-      handle.mat.2 = value
+      mat.2 = value
     }
   }
 
 	public var skewY: Float {
     get {
-      return handle.mat.3
+      return mat.3
     }
     set(value) {
-      handle.mat.3 = value
+      mat.3 = value
     }
   }
 
   public var scaleY: Float {
     get {
-      return handle.mat.4
+      return mat.4
     }
     set(value) {
-      handle.mat.4 = value
+      mat.4 = value
     }
   }
 
   public var transY: Float {
     get {
-      return handle.mat.5
+      return mat.5
     }
     set(value) {
-      handle.mat.5 = value
+      mat.5 = value
     }
   }
 
 	public var persp0: Float {
     get {
-      return handle.mat.6
+      return mat.6
     }
     set(value) {
-      handle.mat.6 = value
+      mat.6 = value
     }
   }
 
   public var persp1: Float {
     get {
-      return handle.mat.7
+      return mat.7
     }
     set(value) {
-      handle.mat.7 = value
+      mat.7 = value
     }
   }
 
   public var persp2: Float {
     get {
-      return handle.mat.8
+      return mat.8
     }
     set(value) {
-      handle.mat.8 = value
+      mat.8 = value
     }
-  }
-
-  public init() {
   }
 
   public init(
@@ -287,6 +289,8 @@ public class Matrix {
     _ skewY: Float, _ scaleY: Float, _ transY: Float,
     _ persp0: Float, _ persp1: Float, _ persp2: Float
   ) {
+    self.init()
+
     self.scaleX = scaleX
     self.skewX  = skewX
     self.transX = transX
@@ -301,9 +305,9 @@ public class Matrix {
   }
 
   public var values: [Float] {
-    get {
+    mutating get {
       // https://forums.developer.apple.com/thread/72120
-      return [Float](UnsafeBufferPointer(start: &handle.mat.0, count: MemoryLayout.size(ofValue: handle.mat)))
+      return [Float](UnsafeBufferPointer(start: &mat.0, count: MemoryLayout.size(ofValue: mat)))
     }
     set(value) {
       if (value.count != Indices.count) {
@@ -342,7 +346,7 @@ public class Matrix {
     values[Indices.persp2] = persp2
   }
 
-  public func setScaleTranslate(sx: Float, sy: Float, tx: Float, ty: Float) {
+  public mutating func setScaleTranslate(sx: Float, sy: Float, tx: Float, ty: Float) {
     scaleX = sx
     skewX = 0
     transX = tx
@@ -357,7 +361,8 @@ public class Matrix {
   }
 
   public func tryInvert(_ inverse: inout Matrix) -> Bool {
-    return sk_matrix_try_invert(&handle, &inverse.handle)
+    var m = self
+    return sk_matrix_try_invert(&m, &inverse)
   }
 
   public func mapRect(_ source: Rect) -> Rect {

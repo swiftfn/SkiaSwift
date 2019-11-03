@@ -44,7 +44,8 @@ public struct Canvas {
   }
 
   public func concat(_ matrix: Matrix) {
-    sk_canvas_concat(handle, &matrix.handle)
+    var m = matrix
+    sk_canvas_concat(handle, &m)
   }
 
   public func drawPaint(_ paint: Paint) {
@@ -80,6 +81,7 @@ public struct Canvas {
   }
 
   public func drawPicture(_ picture: Picture, _ matrix: Matrix, _ paint: Paint) {
-    sk_canvas_draw_picture(handle, picture.handle, &matrix.handle, paint.handle)
+    var m = matrix
+    sk_canvas_draw_picture(handle, picture.handle, &m, paint.handle)
   }
 }

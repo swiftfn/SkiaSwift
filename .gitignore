@@ -9,4 +9,5 @@ Package.resolved
 /Sources/CSkia/include/c
 /Sources/CSkia/out
 
+/docs
 *.png

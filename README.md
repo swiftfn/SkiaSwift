@@ -59,3 +59,11 @@ swift run Demo
 .build/debug/Demo
 .build/release/Demo
 ```
+
+## Generate doc
+
+Install [jazzy](https://github.com/realm/jazzy), then run:
+
+```sh
+jazzy --module SkiaSwift
+```

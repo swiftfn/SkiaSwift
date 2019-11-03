@@ -161,19 +161,19 @@ public class Matrix {
     return m
   }
 
-  public static func concat(target: Matrix, first: Matrix, second: Matrix) {
+  public static func concat(_ target: Matrix, _ first: Matrix, _ second: Matrix) {
     sk_matrix_concat(&target.handle, &first.handle, &second.handle)
   }
 
-  public static func preConcat(target: Matrix, matrix: Matrix) {
+  public static func preConcat(_ target: Matrix, _ matrix: Matrix) {
     sk_matrix_pre_concat(&target.handle, &matrix.handle)
   }
 
-  public static func postConcat(target: Matrix, matrix: Matrix) {
+  public static func postConcat(_ target: Matrix, _ matrix: Matrix) {
     sk_matrix_post_concat(&target.handle, &matrix.handle)
   }
 
-  public static func mapRect(matrix: Matrix, dest: inout Rect, source: Rect) {
+  public static func mapRect(_ matrix: Matrix, _ dest: inout Rect, _ source: Rect) {
     var s = source.handle
     sk_matrix_map_rect(&matrix.handle, &dest.handle, &s)
   }
@@ -356,9 +356,36 @@ public class Matrix {
     persp2 = 1
   }
 
-  public func tryInvert(inverse: inout Matrix) -> Bool {
+  public func tryInvert(_ inverse: inout Matrix) -> Bool {
     return sk_matrix_try_invert(&handle, &inverse.handle)
   }
 
+  public func mapRect(_ source: Rect) -> Rect {
+    var result = Rect()
+    Matrix.mapRect(self, &result, source)
+    return result
+  }
 
+  // public func mapPoints(result: [Point], points: [Point]) {
+  //   if result.count != points.count {
+  //     fatalError("Buffers must be the same size.")
+  //   }
+
+  //   let count = result.count
+  //   var resultHandles = (0..<count).map { sk_point_t() }
+  //   var
+
+  //   sk_matrix_map_points(&handle, resultHandles, points, count)
+  // }
+
+  // public func mapPoints(points: [Point]) -> [Point] {
+  //   var res = [Point](points.count)
+  //   mapPoints(res, points)
+  //   return res
+  // }
+
+  func f(m: inout Point) {
+    let p = unsafeDowncast(&m, to: UnsafePointer<sk_point_t>)
+    print(p)
+  }
 }

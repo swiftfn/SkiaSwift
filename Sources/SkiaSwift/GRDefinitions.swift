@@ -55,41 +55,7 @@ public enum BackendState: UInt32 {
   all       = 0xffffffff
 }
 
-public struct GlFramebufferInfo {
-  var handle = gr_gl_framebufferinfo_t()
-
-  // framebuffer object ID
-  public var fboId: UInt32 {
-    get {
-      return handle.fFBOID
-    }
-    set(value) {
-      handle.fFBOID = value
-    }
-  }
-
-  var format: UInt32 {
-    get {
-      return handle.fFormat
-    }
-    set(value) {
-      handle.fFormat = value
-    }
-  }
-
-  init() {
-  }
-
-  public init(fboId: UInt32) {
-    self.fboId = fboId
-    self.format = 0
-  }
-
-  public init(fboId: UInt32, format: UInt32) {
-    self.fboId = fboId
-    self.format = format
-  }
-}
+public typealias GlFramebufferInfo = gr_gl_framebufferinfo_t
 
 public typealias GlTextureInfo = gr_gl_textureinfo_t
 

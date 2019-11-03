@@ -4,7 +4,7 @@ public class RenderTarget {
   var handle: OpaquePointer
 
   public init(width: Int32, height: Int32, sampleCount: Int32, stencilBits: Int32, glInfo: GlFramebufferInfo) {
-    var info = glInfo.handle
+    var info = glInfo
     let handle = gr_backendrendertarget_new_gl(
       width,
       height,
@@ -70,7 +70,7 @@ public class RenderTarget {
   var glInfo: GlFramebufferInfo {
     get {
       var info = GlFramebufferInfo()
-      gr_backendrendertarget_get_gl_framebufferinfo(handle, &info.handle)
+      gr_backendrendertarget_get_gl_framebufferinfo(handle, &info)
       return info
     }
   }

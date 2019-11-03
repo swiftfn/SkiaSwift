@@ -1,27 +1,8 @@
 import CSkia
 
-public enum SurfaceOrigin {
-  case topLeft,
-  bottomLeft
-}
+public typealias SurfaceOrigin = gr_surfaceorigin_t
 
-public enum PixelConfig {
-  case unknown,
-  alpha8,
-  gray8,
-  rgb565,
-  rgba4444,
-  rgba8888,
-  rgb888,
-  bgra8888,
-  srgba8888,
-  sbgra8888,
-  rgba1010102,
-  rgbaFloat,
-  rgFloat,
-  alphaHalf,
-  rgbaHalf
-}
+public typealias PixelConfig = gr_pixelconfig_t
 
 public typealias Backend = gr_backend_t
 
@@ -82,7 +63,7 @@ extension ColorType {
   public func toPixelConfig() -> PixelConfig {
     switch (self) {
       case .unknown:
-        return PixelConfig.unknown
+        return UNKNOWN_GR_PIXEL_CONFIG
       case .alpha8:
         return PixelConfig.alpha8
       case .gray8:

@@ -1,46 +1,11 @@
 import CSkia
 import Foundation
 
-public enum CodecResult {
-  case success,
-  incompleteInput,
-  errorInInput,
-  invalidConversion,
-  invalidScale,
-  invalidParameters,
-  invalidInput,
-  couldNotRewind,
-  internalError,
-  unimplemented
-}
+public typealias CodecResult = sk_codec_result_t
 
-public enum EncodedOrigin: Int {
-  case topLeft = 1,
-  topRight,
-  bottomRight,
-  bottomLeft,
-  leftTop,
-  rightTop,
-  rightBottom,
-  leftBottom
+public typealias EncodedOrigin = sk_encodedorigin_t
 
-  public static let defaultValue = topLeft
-}
-
-public enum EncodedImageFormat {
-  case bmp,
-  gif,
-  ico,
-  jpeg,
-  png,
-  wbmp,
-  webp,
-  pkm,
-  ktx,
-  astc,
-  dng
-  // heif  // appears to be development still
-}
+public typealias EncodedImageFormat = sk_encoded_image_format_t
 
 public enum FontStyleWeight: Int {
   case invisible  = 0
@@ -68,244 +33,83 @@ public enum FontStyleWidth: Int {
   ultraExpanded
 }
 
-public enum FontStyleSlant: Int {
-  case upright,
-  italic,
-  oblique
-}
+public typealias FontStyleSlant = sk_font_style_slant_t
 
-public enum PointMode {
-  case points,
-  lines,
-  polygon
-}
+public typealias PointMode = sk_point_mode_t
 
-public enum pathDirection: Int {
-  case clockwise = 1,
-  counterClockwise
-}
+public typealias pathDirection = sk_path_direction_t
 
-public enum PathArcSize {
-  case small,
-  large
-}
+public typealias PathArcSize = sk_path_arc_size_t
 
-public enum PathFillType {
-  case winding,
-  evenOdd,
-  inverseWinding,
-  inverseEvenOdd
-}
+public typealias PathFillType = sk_path_filltype_t
 
-public enum PathSegmentMask: Int {
-  case line  = 1  // 1 << 0
-  case quad  = 2  // 1 << 1
-  case conic = 4  // 1 << 2
-  case cubic = 8  // 1 << 3
-}
+public typealias PathSegmentMask = sk_path_segment_mask_t
 
-public enum ColorType: UInt32 {
-  case unknown,
-  alpha8,
-  rgb565,
-  argb4444,
-  rgba8888,
-  rgb888x,
-  bgra8888,
-  rgba1010102,
-  rgb101010x,
-  gray8,
-  rgbaF16
-}
+public typealias ColorType = sk_colortype_t
 
-public enum AlphaType {
-  case unknown,
-  opaque,
-  premul,
-  unpremul
-}
+public typealias AlphaType = sk_alphatype_t
 
-public enum ShaderTileMode {
-  case clamp,
-  repeatMode,
-  mirror
-}
+public typealias ShaderTileMode = sk_shader_tilemode_t
 
-public enum BlurStyle {
-  case normal,
-  solid,
-  outer,
-  inner
-}
+public typealias BlurStyle = sk_blurstyle_t
 
-public enum BlendMode {
-  case clear,
-  src,
-  dst,
-  srcOver,
-  dstOver,
-  srcIn,
-  dstIn,
-  srcOut,
-  dstOut,
-  srcATop,
-  sstATop,
-  xor,
-  plus,
-  modulate,
-  screen,
-  overlay,
-  darken,
-  lighten,
-  colorDodge,
-  colorBurn,
-  hardLight,
-  softLight,
-  difference,
-  exclusion,
-  multiply,
-  hue,
-  saturation,
-  color,
-  luminosity
-}
+public typealias BlendMode = sk_blendmode_t
 
-public enum PixelGeometry {
-  case unknown,
-  rgbHorizontal,
-  bgrHorizontal,
-  rgbVertical,
-  bgrVertical
+public typealias PixelGeometry = sk_pixelgeometry_t
 
+extension PixelGeometry {
   public static func isBgr(pg: PixelGeometry) -> Bool {
-    return pg == .bgrHorizontal || pg == .bgrVertical
+    return pg == BGR_H_SK_PIXELGEOMETRY || pg == BGR_V_SK_PIXELGEOMETRY
   }
 
   public static func isRgb(pg: PixelGeometry) -> Bool {
-    return pg == .rgbHorizontal || pg == .rgbVertical
+    return pg == RGB_H_SK_PIXELGEOMETRY || pg == RGB_V_SK_PIXELGEOMETRY
   }
 
   public static func isVertical(pg: PixelGeometry) -> Bool {
-    return pg == .bgrVertical || pg == .rgbVertical
+    return pg == BGR_V_SK_PIXELGEOMETRY || pg == RGB_V_SK_PIXELGEOMETRY
   }
 
   public static func isHorizontal(pg: PixelGeometry) -> Bool {
-    return pg == .bgrHorizontal || pg == .rgbHorizontal
+    return pg == BGR_H_SK_PIXELGEOMETRY || pg == RGB_H_SK_PIXELGEOMETRY
   }
 }
 
-public enum SurfacePropsFlags: Int {
-  case none
-  case useDeviceIndependentFonts
-}
+public typealias SurfacePropsFlags = sk_surfaceprops_flags_t
 
-public enum Encoding {
-  case utf8,
-  utf16,
-  utf32
-}
+public typealias Encoding = sk_encoding_t
 
-public enum StrokeCap {
-	case butt,
-  round,
-  square
-}
+public typealias StrokeCap = sk_stroke_cap_t
 
-public enum StrokeJoin {
-  case miter,
-  round,
-  bevel
-}
+public typealias StrokeJoin = sk_stroke_join_t
 
-public enum TextAlign {
-  case left,
-  center,
-  right
-}
+public typealias TextAlign = sk_text_align_t
 
-public enum TextEncoding {
-  case utf8,
-  utf16,
-  utf32,
-  glyphId
-}
+public typealias TextEncoding = sk_text_encoding_t
 
-public enum FilterQuality {
-	case none,
-	low,
-	medium,
-	high
-}
+public typealias FilterQuality = sk_filter_quality_t
 
-public enum CropRectFlags: Int {
-	case hasNone = 0,
-  hasLeft = 0x01,
-  hasTop = 0x02,
-  hasWidth = 0x04,
-  hasHeight = 0x08,
-  hasAll = 0x0F
-}
+public typealias CropRectFlags = sk_crop_rect_flags_t
 
-public enum DropShadowImageFilterShadowMode {
-  case drawShadowAndForeground,
-  drawShadowOnly
-}
+public typealias DropShadowImageFilterShadowMode = sk_drop_shadow_image_filter_shadow_mode_t
 
-public enum DisplacementMapEffectChannelSelectorType {
-  case unknown,
-  r,
-  g,
-  b,
-  a
-}
+public typealias DisplacementMapEffectChannelSelectorType = sk_displacement_map_effect_channel_selector_type_t
 
-public enum MatrixConvolutionTileMode {
-  case clamp,
-  repeatMode,
-  clampToBlack
-}
+public typealias MatrixConvolutionTileMode = sk_matrix_convolution_tilemode_t
 
-public enum PaintStyle {
-  case fill,
-  stroke,
-  strokeAndFill
-}
+public typealias PaintStyle = sk_paint_style_t
 
-public enum PaintHinting: Int {
-  case noHinting,
-  slight,
-  normal,
-  full
-}
+public typealias PaintHinting = sk_paint_hinting_t
 
-public enum RegionOperation {
-  case difference,
-  intersect,
-  union,
-  xor,
-  reverseDifference,
-  replace
-}
+public typealias RegionOperation = sk_region_op_t
 
-public enum ClipOperation {
-  case difference,
-  intersect
-}
+public typealias ClipOperation = sk_clipop_t
 
-public enum ZeroInitialized {
-	case yes,
-	no
-}
+public typealias CodecZeroInitialized = sk_codec_zero_initialized_t
 
-public enum CodecScanlineOrder {
-  case topDown,
-  bottomUp
-}
+public typealias CodecScanlineOrder = sk_codec_scanline_order_t
 
-public enum TransferFunctionBehavior {
-  case respect,
-  ignore
-}
+public typealias TransferFunctionBehavior = sk_transfer_function_behavior_t
 
 struct CodecOptionsInternal {
   var fZeroInitialized: ZeroInitialized
@@ -353,19 +157,9 @@ public struct CodecOptions {
   }
 }
 
-public enum CodecAnimationDisposalMethod: Int {
-  case keep = 1,
-  restoreBackgroundColor,
-  restorePrevious
-}
+public typealias CodecAnimationDisposalMethod = sk_codecanimation_disposalmethod_t
 
-public struct CodecFrameInfo {
-  var requiredFrame: Int
-  var duration: Int
-  var fullyRecieved: UInt8
-  var alphaType: AlphaType
-  var disposalMethod: CodecAnimationDisposalMethod
-}
+public typealias CodecFrameInfo = sk_codec_frameinfo_t
 
 public struct FontMetrics {
   private static let flagsUnderlineThicknessIsValid: UInt = 1  // 1 << 0
@@ -411,25 +205,11 @@ public struct FontMetrics {
   }
 }
 
-public enum PathOp {
-  case difference,
-  intersect,
-  union,
-  xor,
-  reverseDifference
-}
+public typealias PathOp = sk_pathop_t
 
-public enum PathConvexity {
-  case unknown,
-  convex,
-  concave
-}
+public typealias PathConvexity = sk_path_convexity_t
 
-public enum LatticeRectType {
-  case defaultType,
-  transparent,
-  fixedColor
-}
+public typealias LatticeRectType = sk_lattice_recttype_t
 
 struct SKLatticeInternal {
   var fXDivs: UnsafePointer<Int>

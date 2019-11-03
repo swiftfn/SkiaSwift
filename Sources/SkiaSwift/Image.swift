@@ -2,7 +2,7 @@ import CSkia
 
 public class Image {
   public static func rasterCopy(imageInfo: ImageInfo, pixels: UnsafeRawPointer, rowBytes: Int) -> Image {
-    var info = imageInfo.handle
+    var info = imageInfo
     let handle = sk_image_new_raster_copy(&info, pixels, rowBytes)
     return Image(handle!)
   }

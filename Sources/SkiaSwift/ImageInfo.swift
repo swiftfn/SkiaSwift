@@ -19,40 +19,17 @@ struct PlatformColorShift {
   }
 }
 
-public struct ImageInfo {
+public typealias ImageInfo = sk_imageinfo_t
+
+extension ImageInfo {
   static let platformColorType = ColorType(rawValue: sk_colortype_get_default_8888().rawValue)
   static let platformColorShift = PlatformColorShift()
 
-  var handle = sk_imageinfo_t()
-
   public init(_ width: Int32, _ height: Int32, _ colorType: sk_colortype_t, _ alphaType: sk_alphatype_t) {
-    handle.width = width
-    handle.height = height
-    handle.colorType = colorType
-    handle.alphaType = alphaType
-  }
-
-  public var width: Int32 {
-    get {
-      return handle.width
-    }
-  }
-
-  public var height: Int32 {
-    get {
-      return handle.height
-    }
-  }
-
-  public var colorType: sk_colortype_t {
-    get {
-      return handle.colorType
-    }
-  }
-
-  public var alphaType: sk_alphatype_t {
-    get {
-      return handle.alphaType
-    }
+    self.init()
+    self.width = width
+    self.height = height
+    self.colorType = colorType
+    self.alphaType = alphaType
   }
 }

@@ -383,9 +383,4 @@ public class Matrix {
   //   mapPoints(res, points)
   //   return res
   // }
-
-  func f(m: inout Point) {
-    let p = unsafeDowncast(&m, to: UnsafePointer<sk_point_t>)
-    print(p)
-  }
 }

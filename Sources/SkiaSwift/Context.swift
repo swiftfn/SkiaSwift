@@ -9,12 +9,10 @@ public class Context {
 
   convenience init(backend: Backend) {
     switch (backend) {
-      case .metal:
-        fatalError("Metal backend not supported")
-      case .openGl:
+      case OPENGL_GR_BACKEND:
         self.init(glInterface: nil)
-      case .vulkan:
-        fatalError("Vulkan backend not supported")
+      default:
+        fatalError("Backend not supported")
     }
   }
 
@@ -60,7 +58,7 @@ public class Context {
 
   var backend: Backend {
     get {
-      return Backend(gr_context_get_backend(handle))
+      return gr_context_get_backend(handle)
     }
   }
 }

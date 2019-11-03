@@ -23,15 +23,7 @@ public enum PixelConfig {
   rgbaHalf
 }
 
-public enum Backend: UInt32 {
-  case metal,
-  openGl,
-  vulkan
-
-  init(_ backend: gr_backend_t) {
-    self.init(rawValue: backend.rawValue)!
-  }
-}
+public typealias Backend = gr_backend_t
 
 public enum GlBackendState: UInt32 {
   case none      = 0,
@@ -44,7 +36,7 @@ public enum GlBackendState: UInt32 {
   stencil        = 64,    // 1 << 6
   pixelStore     = 128,   // 1 << 7
   program        = 256,   // 1 << 8
-  fixedFunction  = 512,   // 1 << 9
+  fixedFunction   = 512,   // 1 << 9
   misc           = 1024,  // 1 << 10
   pathRendering  = 2048,  // 1 << 11
   all            = 0xffff

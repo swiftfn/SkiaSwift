@@ -51,7 +51,7 @@ public class RenderTarget {
 
   var backend: Backend {
     get {
-      return Backend(gr_backendrendertarget_get_backend(handle))
+      return gr_backendrendertarget_get_backend(handle)
     }
   }
 

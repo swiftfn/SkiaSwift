@@ -4,7 +4,7 @@ public class Texture {
   var handle: OpaquePointer
 
   init(width: Int32, height: Int32, mipmapped: Bool, glInfo: GlTextureInfo) {
-    var info = glInfo.handle
+    var info = glInfo
     self.handle = gr_backendtexture_new_gl(width, height, mipmapped, &info)!
   }
 
@@ -61,7 +61,7 @@ public class Texture {
   var glInfo: GlTextureInfo {
     get {
       var info = GlTextureInfo()
-      gr_backendtexture_get_gl_textureinfo(handle, &info.handle)
+      gr_backendtexture_get_gl_textureinfo(handle, &info)
       return info
     }
   }

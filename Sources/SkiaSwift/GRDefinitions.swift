@@ -91,36 +91,7 @@ public struct GlFramebufferInfo {
   }
 }
 
-public struct GlTextureInfo {
-  var handle = gr_gl_textureinfo_t()
-
-  var target: UInt32 {
-    get {
-      return handle.fTarget
-    }
-    set(value) {
-      handle.fTarget = value
-    }
-  }
-
-  var id: UInt32 {
-    get {
-      handle.fID
-    }
-    set(value) {
-      handle.fID = value
-    }
-  }
-
-  var format: UInt32 {
-    get {
-      handle.fFormat
-    }
-    set(value) {
-      handle.fFormat = value
-    }
-  }
-}
+public typealias GlTextureInfo = gr_gl_textureinfo_t
 
 extension ColorType {
   public func toGlSizedFormat() -> Int {

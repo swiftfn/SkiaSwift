@@ -174,8 +174,8 @@ public class Matrix {
   }
 
   public static func mapRect(_ matrix: Matrix, _ dest: inout Rect, _ source: Rect) {
-    var s = source.handle
-    sk_matrix_map_rect(&matrix.handle, &dest.handle, &s)
+    var s = source
+    sk_matrix_map_rect(&matrix.handle, &dest, &s)
   }
 
   var handle = sk_matrix_t()

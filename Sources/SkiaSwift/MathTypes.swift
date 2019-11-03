@@ -3,7 +3,9 @@ import CSkia
 infix operator +: AdditionPrecedence
 infix operator -: AdditionPrecedence
 
-public struct Point {
+public typealias Point = sk_point_t
+
+extension Point {
   public static func normalize(_ point: Point) -> Point {
     let ls = point.x * point.x + point.y * point.y
     let invNorm = 1.0 / ls.squareRoot()
@@ -37,11 +39,11 @@ public struct Point {
   }
 
   public static func +(_ pt: Point, _ sz: Size) -> Point {
-    return Point(pt.x + sz.width, pt.y + sz.height)
+    return Point(pt.x + sz.w, pt.y + sz.h)
   }
 
   public static func +(_ pt: Point, _ sz: SizeI) -> Point {
-    return Point(pt.x + Float(sz.width), pt.y + Float(sz.height))
+    return Point(pt.x + Float(sz.w), pt.y + Float(sz.h))
   }
 
   public static func -(_ pt: Point, _ sz: Point) -> Point {
@@ -53,34 +55,15 @@ public struct Point {
   }
 
   public static func -(_ pt: Point, _ sz: Size) -> Point {
-    return Point(pt.x - sz.width, pt.y - sz.width)
+    return Point(pt.x - sz.w, pt.y - sz.w)
   }
 
   public static func -(_ pt: Point, _ sz: SizeI) -> Point {
-    return Point(pt.x - Float(sz.width), pt.y - Float(sz.width))
-  }
-
-  var handle = sk_point_t()
-
-  public var x: Float {
-    get {
-      return handle.x
-    }
-    set(value) {
-      handle.x = value
-    }
-  }
-
-  public var y: Float {
-    get {
-      return handle.y
-    }
-    set(value) {
-      handle.y = value
-    }
+    return Point(pt.x - Float(sz.w), pt.y - Float(sz.w))
   }
 
   init(_ x: Float, _ y: Float) {
+    self.init()
     self.x = x
     self.y = y
   }
@@ -108,7 +91,9 @@ public struct Point {
   }
 }
 
-public struct PointI {
+public typealias PointI = sk_ipoint_t
+
+extension PointI {
   public static func normalize(_ point: PointI) -> PointI {
     let x = Float(point.x)
     let y = Float(point.y)
@@ -158,7 +143,7 @@ public struct PointI {
   }
 
   public static func +(_ pt: PointI, _ sz: SizeI) -> PointI {
-    return PointI(pt.x + sz.width, pt.y + sz.height)
+    return PointI(pt.x + sz.w, pt.y + sz.h)
   }
 
   public static func -(_ pt: PointI, _ sz: PointI) -> PointI {
@@ -166,20 +151,17 @@ public struct PointI {
   }
 
   public static func -(_ pt: PointI, _ sz: SizeI) -> PointI {
-    return PointI(pt.x - sz.width, pt.y - sz.height)
+    return PointI(pt.x - sz.w, pt.y - sz.h)
   }
 
-  public var x: Int32
-  public var y: Int32
-
   init(_ x: Int32, _ y: Int32) {
+    self.init()
     self.x = x
     self.y = y
   }
 
   init(_ sz: SizeI) {
-    x = sz.width
-    y = sz.height
+    self.init(sz.w, sz.h)
   }
 
   public var length: Float {
@@ -205,7 +187,9 @@ public struct PointI {
   }
 }
 
-public struct Point3 {
+public typealias Point3 = sk_point3_t
+
+extension Point3 {
   public static func +(_ pt: Point3, _ sz: Point3) -> Point3 {
     return Point3(pt.x + sz.x, pt.y + sz.y, pt.z + sz.z)
   }
@@ -214,82 +198,79 @@ public struct Point3 {
     return Point3(pt.x - sz.x, pt.y - sz.y, pt.z - sz.z)
   }
 
-  public var x: Float
-  public var y: Float
-  public var z: Float
-
   init(_ x: Float, _ y: Float, _ z: Float) {
+    self.init()
     self.x = x
     self.y = y
     self.z = z
   }
 }
 
-public struct Size {
+public typealias Size = sk_size_t
+
+extension Size {
   public static func +(_ sz1: Size, _ sz2: Size) -> Size {
-    return Size(sz1.width + sz2.width, sz1.height + sz2.height)
+    return Size(sz1.w + sz2.w, sz1.h + sz2.h)
   }
 
   public static func -(_ sz1: Size, _ sz2: Size) -> Size {
-    return Size(sz1.width - sz2.width, sz1.height - sz2.height)
+    return Size(sz1.w - sz2.w, sz1.h - sz2.h)
   }
 
-  public var width: Float
-  public var height: Float
-
-  public init(_ width: Float, _ height: Float) {
-    self.width = width
-    self.height = height
+  public init(_ w: Float, _ h: Float) {
+    self.init()
+    self.w = w
+    self.h = h
   }
 
   public init(_ point: Point) {
-    width = point.x
-    height = point.y
+    self.init(point.x, point.y)
   }
 
   public func toPoint() -> Point {
-		return Point(width, height)
+		return Point(w, h)
   }
 
   public func toSizeI() -> SizeI {
-    return SizeI(Int32(width), Int32(height))
+    return SizeI(Int32(w), Int32(h))
   }
 }
 
-public struct SizeI {
+public typealias SizeI = sk_isize_t
+
+extension SizeI {
   public static func +(_ sz1: SizeI, _ sz2: SizeI) -> SizeI {
-    return SizeI(sz1.width + sz2.width, sz1.height + sz2.height)
+    return SizeI(sz1.w + sz2.w, sz1.h + sz2.h)
   }
 
   public static func -(_ sz1: SizeI, _ sz2: SizeI) -> SizeI {
-    return SizeI(sz1.width - sz2.width, sz1.height - sz2.height)
+    return SizeI(sz1.w - sz2.w, sz1.h - sz2.h)
   }
 
-  public var width: Int32
-  public var height: Int32
-
-  public init(_ width: Int32, _ height: Int32) {
-    self.width = width
-    self.height = height
+  public init(_ w: Int32, _ h: Int32) {
+    self.init()
+    self.w = w
+    self.h = h
   }
 
   public init(_ point: PointI) {
-    width = point.x
-    height = point.y
+    self.init(point.x, point.y)
   }
 
   public func toPointI() -> PointI {
-    return PointI(width, height)
+    return PointI(w, h)
   }
 
   func toSize() -> Size {
-    return Size(Float(width), Float(height))
+    return Size(Float(w), Float(h))
   }
 }
 
-public struct Rect {
+public typealias Rect = sk_rect_t
+
+extension Rect {
   public static func create(location: Point, size: Size) -> Rect {
-    return create(x: location.x, y: location.y, width: size.width, height: size.height)
+    return create(x: location.x, y: location.y, width: size.w, height: size.h)
   }
 
   public static func create(size: Size) -> Rect {
@@ -332,49 +313,8 @@ public struct Rect {
     )
   }
 
-  var handle = sk_rect_t()
-
-  public var left: Float {
-    get {
-      return handle.left
-    }
-    set(value) {
-      handle.left = value
-    }
-  }
-
-  public var top: Float {
-    get {
-      return handle.top
-    }
-    set(value) {
-      handle.top = value
-    }
-  }
-
-  public var right: Float {
-    get {
-      return handle.right
-    }
-    set(value) {
-      handle.right = value
-    }
-  }
-
-  public var bottom: Float {
-    get {
-      return handle.bottom
-    }
-    set(value) {
-      handle.bottom = value
-    }
-  }
-
-  init() {
-    self.init(0, 0, 0, 0)
-  }
-
   public init(_ left: Float, _ top: Float, _ right: Float, _ bottom: Float) {
+    self.init()
     self.left = left
     self.top = top
     self.right = right
@@ -410,8 +350,8 @@ public struct Rect {
       return Size(width, height)
     }
     set(value) {
-      right = left + value.width
-      bottom = top + value.height
+      right = left + value.w
+      bottom = top + value.h
     }
   }
 
@@ -452,7 +392,7 @@ public struct Rect {
   }
 
   public mutating func inflate(_ size: Size) {
-    inflate(size.width, size.height)
+    inflate(size.w, size.h)
   }
 
   public mutating func inflate(_ x: Float, _ y: Float) {
@@ -503,12 +443,12 @@ public struct Rect {
   }
 
   private func aspectResize(_ size: Size, _ fit: Bool) -> Rect {
-    if size.width == 0 || size.height == 0 || width == 0 || height == 0 {
+    if size.w == 0 || size.h == 0 || width == 0 || height == 0 {
       return Rect.create(x: midX, y: midY, width: 0, height: 0)
     }
 
-    var aspectWidth = size.width
-    var aspectHeight = size.height
+    var aspectWidth = size.w
+    var aspectHeight = size.h
     let imgAspect = aspectWidth / aspectHeight
     let fullRectAspect = width / height
 
@@ -527,13 +467,15 @@ public struct Rect {
   }
 }
 
-public struct RectI {
+public typealias RectI = sk_irect_t
+
+extension RectI {
   public static func create(size: SizeI) -> RectI {
-    return create(x: 0, y: 0, width: size.width, height: size.height)
+    return create(x: 0, y: 0, width: size.w, height: size.h)
   }
 
   public static func create(location: PointI, size: SizeI) -> RectI {
-    return create(x: location.x, y: location.y, width: size.width, height: size.height)
+    return create(x: location.x, y: location.y, width: size.w, height: size.h)
   }
 
   public static func create(width: Int32, height: Int32) -> RectI {
@@ -612,45 +554,8 @@ public struct RectI {
     )
   }
 
-  var handle = sk_irect_t()
-
-  public var left: Int32 {
-    get {
-      return handle.left
-    }
-    set(value) {
-      handle.left = value
-    }
-  }
-
-  public var top: Int32 {
-    get {
-      return handle.top
-    }
-    set(value) {
-      handle.top = value
-    }
-  }
-
-  public var right: Int32 {
-    get {
-      return handle.right
-    }
-    set(value) {
-      handle.right = value
-    }
-  }
-
-  public var bottom: Int32 {
-    get {
-      return handle.bottom
-    }
-    set(value) {
-      handle.bottom = value
-    }
-  }
-
   public init(_ left: Int32, _ top: Int32, _ right: Int32, _ bottom: Int32) {
+    self.init()
     self.left = left
     self.top = top
     self.right = right
@@ -686,8 +591,8 @@ public struct RectI {
       return SizeI(width, height)
     }
     set(value) {
-      right = left + value.width
-      bottom = top + value.height
+      right = left + value.w
+      bottom = top + value.h
     }
   }
 
@@ -728,7 +633,7 @@ public struct RectI {
   }
 
   public mutating func inflate(_ size: SizeI) {
-    inflate(size.width, size.height)
+    inflate(size.w, size.h)
   }
 
   public mutating func inflate(_ width: Int32, _ height: Int32) {

@@ -7,7 +7,7 @@ public class Shader {
     colors: inout [UInt32],
     tileMode: sk_shader_tilemode_t
   ) -> Shader {
-    var points = [point0.handle, point1.handle]
+    var points = [point0, point1]
     let handle = sk_shader_new_linear_gradient(&points, &colors, nil, Int32(colors.count), tileMode, nil)
     return Shader(handle!)
   }
@@ -18,7 +18,7 @@ public class Shader {
     colors: inout [UInt32],
     tileMode: sk_shader_tilemode_t
   ) -> Shader {
-    var ccenter = center.handle
+    var ccenter = center
     let handle = sk_shader_new_radial_gradient(&ccenter, radius, &colors, nil, Int32(colors.count), tileMode, nil)
     return Shader(handle!)
   }
@@ -31,7 +31,7 @@ public class Shader {
     startAngle: Float,
     endAngle: Float
   ) -> Shader {
-    var ccenter = center.handle
+    var ccenter = center
     let handle = sk_shader_new_sweep_gradient(&ccenter, &colors, nil, Int32(colors.count), tileMode, startAngle, endAngle, nil)
     return Shader(handle!)
   }
@@ -42,14 +42,18 @@ public class Shader {
     colors: inout [UInt32],
     tileMode: sk_shader_tilemode_t
   ) -> Shader {
-    var cstart = start.handle
-    var cend = end.handle
+    var cstart = start
+    var cend = end
     let handle = sk_shader_new_two_point_conical_gradient(
-        &cstart, startRadius,
-        &cend, endRadius,
-        &colors, nil, Int32(colors.count),
-        tileMode,
-        nil
+      &cstart,
+      startRadius,
+      &cend,
+      endRadius,
+      &colors,
+      nil,
+      Int32(colors.count),
+      tileMode,
+      nil
     )
     return Shader(handle!)
   }

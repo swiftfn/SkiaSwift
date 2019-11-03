@@ -8,7 +8,7 @@ public class Image {
   }
 
   public static func fromEncoded(encoded: ImageData, subset: RectI) -> Image {
-    var r = subset.handle
+    var r = subset
     let handle = sk_image_new_from_encoded(encoded.handle, &r)
     return Image(handle!)
   }

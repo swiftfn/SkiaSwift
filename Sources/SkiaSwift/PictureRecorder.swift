@@ -17,7 +17,7 @@ public class PictureRecorder {
   }
 
   public func beginRecording(rect: Rect) -> Canvas {
-    var r = rect.handle
+    var r = rect
     let canvasHandle = sk_picture_recorder_begin_recording(handle, &r)
     return Canvas(handle: canvasHandle!)
   }

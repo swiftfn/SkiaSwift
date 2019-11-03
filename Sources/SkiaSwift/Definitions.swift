@@ -37,7 +37,7 @@ public typealias FontStyleSlant = sk_font_style_slant_t
 
 public typealias PointMode = sk_point_mode_t
 
-public typealias pathDirection = sk_path_direction_t
+public typealias PathDirection = sk_path_direction_t
 
 public typealias PathArcSize = sk_path_arc_size_t
 
@@ -464,10 +464,7 @@ public struct JpegEncoderOptions {
   }
 }
 
-public enum WebpEncoderCompression {
-  case lossy,
-  lossless
-}
+public typealias WebpEncoderCompression = sk_webpencoder_compression_t
 
 public struct WebpEncoderOptions {
   var compression: WebpEncoderCompression
@@ -475,7 +472,7 @@ public struct WebpEncoderOptions {
   var unpremulBehavior: TransferFunctionBehavior = RESPECT_SK_TRANSFER_FUNCTION_BEHAVIOR
 
   public static let defaultOptions = WebpEncoderOptions(
-    compression: .lossy,
+    compression: LOSSY_SK_WEBPENCODER_COMPTRESSION,
     quality: 100
   )
 
@@ -490,18 +487,6 @@ public struct WebpEncoderOptions {
   }
 }
 
-public enum RoundRectType {
-  case empty,
-  rect,
-  oval,
-  simple,
-  ninePatch,
-  complex
-}
+public typealias RoundRectType = sk_rrect_type_t
 
-public enum RoundRectCorner {
-  case upperLeft,
-  upperRight,
-  lowerRight,
-  lowerLeft
-}
+public typealias RoundRectCorner = sk_rrect_corner_t

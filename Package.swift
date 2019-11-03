@@ -2,7 +2,10 @@
 import PackageDescription
 
 let package = Package(
-    name: "CSkiaSwift",
+    name: "SkiaSwift",
+    products: [
+        .library(name: "SkiaSwift", targets: ["SkiaSwift"])
+    ],
     dependencies: [
     ],
     targets: [

@@ -311,6 +311,14 @@ public enum RegionOperation: UInt32 {
   xor,
   reverseDifference,
   replace
+
+  static func fromC(_ op: sk_region_op_t) -> RegionOperation {
+    RegionOperation(rawValue: op.rawValue)!
+  }
+
+  func toC() -> sk_region_op_t {
+    sk_region_op_t(rawValue)
+  }
 }
 
 public enum ClipOperation: UInt32 {

@@ -61,8 +61,8 @@ public typealias GlFramebufferInfo = gr_gl_framebufferinfo_t
 
 public typealias GlTextureInfo = gr_gl_textureinfo_t
 
-extension ColorType {
-  public func toGlSizedFormat() -> Int {
+public extension ColorType {
+  func toGlSizedFormat() -> Int {
     switch (self) {
       case .unknown:
         return 0
@@ -89,7 +89,7 @@ extension ColorType {
     }
   }
 
-  public func toPixelConfig() -> PixelConfig {
+  func toPixelConfig() -> PixelConfig {
     switch (self) {
       case .unknown:
         return PixelConfig.unknown
@@ -117,8 +117,8 @@ extension ColorType {
   }
 }
 
-extension PixelConfig {
-  public func toGlSizedFormat() -> Int {
+public extension PixelConfig {
+  func toGlSizedFormat() -> Int {
     switch (self) {
       case .alpha8:
         return GlSizedFormat.ALPHA8
@@ -153,7 +153,7 @@ extension PixelConfig {
     }
   }
 
-  public func toColorType() -> ColorType {
+  func toColorType() -> ColorType {
     switch (self) {
       case .unknown:
         return ColorType.unknown

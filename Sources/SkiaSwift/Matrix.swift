@@ -2,7 +2,7 @@ import CSkia
 
 public typealias Matrix = sk_matrix_t
 
-extension Matrix {
+public extension Matrix {
   static func sdot(_ a: Float, _ b: Float, _ c: Float, _ d: Float) -> Float {
     return a * b + c * d
   }
@@ -11,7 +11,7 @@ extension Matrix {
     return a * b - c * d
   }
 
-  public static func makeIdentity() -> Matrix {
+  static func makeIdentity() -> Matrix {
     var m = Matrix()
     m.scaleX = 1
     m.scaleY = 1
@@ -19,7 +19,7 @@ extension Matrix {
     return m
   }
 
-  public static func makeScale(_ sx: Float, _ sy: Float) -> Matrix {
+  static func makeScale(_ sx: Float, _ sy: Float) -> Matrix {
     if Utils.nearlyEqual(sx, 1) && Utils.nearlyEqual(sy, 1) {
       return makeIdentity()
     }
@@ -34,7 +34,7 @@ extension Matrix {
   /// Set the matrix to scale by sx and sy, with a pivot point at (px, py).
   /// The pivot point is the coordinate that should remain unchanged by the
   /// specified transformation.
-  public static func makeScale(_ sx: Float, _ sy: Float, _ pivotx: Float, _ pivoty: Float) -> Matrix {
+  static func makeScale(_ sx: Float, _ sy: Float, _ pivotx: Float, _ pivoty: Float) -> Matrix {
     if Utils.nearlyEqual(sx, 1) && Utils.nearlyEqual(sy, 1) {
       return makeIdentity()
     }
@@ -51,7 +51,7 @@ extension Matrix {
     return m
   }
 
-  public static func makeTranslation(_ dx: Float, _ dy: Float) -> Matrix {
+  static func makeTranslation(_ dx: Float, _ dy: Float) -> Matrix {
     if Utils.nearlyEqual(dx, 0) && Utils.nearlyEqual(dy, 0) {
       return makeIdentity()
     }
@@ -65,7 +65,7 @@ extension Matrix {
     return m
   }
 
-  public static func makeRotation(_ radians: Float) -> Matrix {
+  static func makeRotation(_ radians: Float) -> Matrix {
     let s = sin(radians)
     let c = cos(radians)
     var m = Matrix()
@@ -73,7 +73,7 @@ extension Matrix {
     return m
   }
 
-  public static func makeRotation(_ radians: Float, _ pivotx: Float, _ pivoty: Float) -> Matrix {
+  static func makeRotation(_ radians: Float, _ pivotx: Float, _ pivoty: Float) -> Matrix {
     let s = sin(radians)
     let c = cos(radians)
     var m = Matrix()
@@ -83,11 +83,11 @@ extension Matrix {
 
   static let degToRad = Float.pi / 180
 
-  public static func makeRotationDegrees(_ degrees: Float) -> Matrix {
+  static func makeRotationDegrees(_ degrees: Float) -> Matrix {
     return makeRotation(degrees * degToRad)
   }
 
-  public static func makeRotationDegrees(_ degrees: Float, _ pivotx: Float, _ pivoty: Float) -> Matrix {
+  static func makeRotationDegrees(_ degrees: Float, _ pivotx: Float, _ pivoty: Float) -> Matrix {
     return makeRotation(degrees * degToRad, pivotx, pivoty)
   }
 
@@ -121,31 +121,31 @@ extension Matrix {
     matrix.persp2 = 1
   }
 
-  public static func rotate(_ matrix: inout Matrix, _ radians: Float, _ pivotx: Float, _ pivoty: Float) {
+  static func rotate(_ matrix: inout Matrix, _ radians: Float, _ pivotx: Float, _ pivoty: Float) {
     let s = sin(radians)
     let c = cos(radians)
     setSinCos(&matrix, s, c, pivotx, pivoty)
   }
 
-  public static func rotateDegrees(_ matrix: inout Matrix, _ degrees: Float, _ pivotx: Float, _ pivoty: Float) {
+  static func rotateDegrees(_ matrix: inout Matrix, _ degrees: Float, _ pivotx: Float, _ pivoty: Float) {
     let s = sin(degrees * degToRad)
     let c = cos(degrees * degToRad)
     setSinCos(&matrix, s, c, pivotx, pivoty)
   }
 
-  public static func rotate(_ matrix: inout Matrix, _ radians: Float) {
+  static func rotate(_ matrix: inout Matrix, _ radians: Float) {
     let s = sin(radians)
     let c = cos(radians)
     setSinCos(&matrix, s, c)
   }
 
-  public static func rotateDegrees(_ matrix: inout Matrix, _ degrees: Float) {
+  static func rotateDegrees(_ matrix: inout Matrix, _ degrees: Float) {
     let s = sin(degrees * degToRad)
     let c = cos(degrees * degToRad)
     setSinCos(&matrix, s, c)
   }
 
-  public static func makeSkew(_ sx: Float, _ sy: Float) -> Matrix {
+  static func makeSkew(_ sx: Float, _ sy: Float) -> Matrix {
     var m = Matrix()
 
     m.scaleX = 1
@@ -163,23 +163,23 @@ extension Matrix {
     return m
   }
 
-  public static func concat(_ target: inout Matrix, _ first: Matrix, _ second: Matrix) {
+  static func concat(_ target: inout Matrix, _ first: Matrix, _ second: Matrix) {
     var f = first
     var s = second
     sk_matrix_concat(&target, &f, &s)
   }
 
-  public static func preConcat(_ target: inout Matrix, _ matrix: Matrix) {
+  static func preConcat(_ target: inout Matrix, _ matrix: Matrix) {
     var m = matrix
     sk_matrix_pre_concat(&target, &m)
   }
 
-  public static func postConcat(_ target: inout Matrix, _ matrix: Matrix) {
+  static func postConcat(_ target: inout Matrix, _ matrix: Matrix) {
     var m = matrix
     sk_matrix_post_concat(&target, &m)
   }
 
-  public static func mapRect(_ matrix: Matrix, _ dest: inout Rect, _ source: Rect) {
+  static func mapRect(_ matrix: Matrix, _ dest: inout Rect, _ source: Rect) {
     var m = matrix
     var s = source
     sk_matrix_map_rect(&m, &dest, &s)
@@ -203,7 +203,7 @@ extension Matrix {
 
   // https://stackoverflow.com/questions/34776546/access-element-of-fixed-length-c-array-in-swift
 
-  public var scaleX: Float {
+  var scaleX: Float {
     get {
       mat.0
     }
@@ -212,7 +212,7 @@ extension Matrix {
     }
   }
 
-  public var skewX: Float {
+  var skewX: Float {
     get {
       mat.1
     }
@@ -221,7 +221,7 @@ extension Matrix {
     }
   }
 
-  public var transX: Float {
+  var transX: Float {
     get {
       mat.2
     }
@@ -230,7 +230,7 @@ extension Matrix {
     }
   }
 
-	public var skewY: Float {
+	var skewY: Float {
     get {
       mat.3
     }
@@ -239,7 +239,7 @@ extension Matrix {
     }
   }
 
-  public var scaleY: Float {
+  var scaleY: Float {
     get {
       mat.4
     }
@@ -248,7 +248,7 @@ extension Matrix {
     }
   }
 
-  public var transY: Float {
+  var transY: Float {
     get {
       mat.5
     }
@@ -257,7 +257,7 @@ extension Matrix {
     }
   }
 
-	public var persp0: Float {
+	var persp0: Float {
     get {
       mat.6
     }
@@ -266,7 +266,7 @@ extension Matrix {
     }
   }
 
-  public var persp1: Float {
+  var persp1: Float {
     get {
       mat.7
     }
@@ -275,7 +275,7 @@ extension Matrix {
     }
   }
 
-  public var persp2: Float {
+  var persp2: Float {
     get {
       mat.8
     }
@@ -284,7 +284,7 @@ extension Matrix {
     }
   }
 
-  public init(
+  init(
     _ scaleX: Float, _ skewX: Float, _ transX: Float,
     _ skewY: Float, _ scaleY: Float, _ transY: Float,
     _ persp0: Float, _ persp1: Float, _ persp2: Float
@@ -304,7 +304,7 @@ extension Matrix {
     self.persp2 = persp2
   }
 
-  public var values: [Float] {
+  var values: [Float] {
     mutating get {
       // https://forums.developer.apple.com/thread/72120
       [Float](UnsafeBufferPointer(start: &mat.0, count: MemoryLayout.size(ofValue: mat)))
@@ -328,7 +328,7 @@ extension Matrix {
     }
   }
 
-  public func getValues(_ values: inout [Float]) {
+  func getValues(_ values: inout [Float]) {
     if (values.count != Indices.count) {
       fatalError("The matrix array must have a count of \(Indices.count)")
     }
@@ -346,7 +346,7 @@ extension Matrix {
     values[Indices.persp2] = persp2
   }
 
-  public mutating func setScaleTranslate(sx: Float, sy: Float, tx: Float, ty: Float) {
+  mutating func setScaleTranslate(sx: Float, sy: Float, tx: Float, ty: Float) {
     scaleX = sx
     skewX = 0
     transX = tx
@@ -360,18 +360,18 @@ extension Matrix {
     persp2 = 1
   }
 
-  public func tryInvert(_ inverse: inout Matrix) -> Bool {
+  func tryInvert(_ inverse: inout Matrix) -> Bool {
     var m = self
     return sk_matrix_try_invert(&m, &inverse)
   }
 
-  public func mapRect(_ source: Rect) -> Rect {
+  func mapRect(_ source: Rect) -> Rect {
     var result = Rect()
     Matrix.mapRect(self, &result, source)
     return result
   }
 
-  // public func mapPoints(result: [Point], points: [Point]) {
+  // func mapPoints(result: [Point], points: [Point]) {
   //   if result.count != points.count {
   //     fatalError("Buffers must be the same size.")
   //   }
@@ -383,7 +383,7 @@ extension Matrix {
   //   sk_matrix_map_points(&handle, resultHandles, points, count)
   // }
 
-  // public func mapPoints(points: [Point]) -> [Point] {
+  // func mapPoints(points: [Point]) -> [Point] {
   //   var res = [Point](points.count)
   //   mapPoints(res, points)
   //   return res

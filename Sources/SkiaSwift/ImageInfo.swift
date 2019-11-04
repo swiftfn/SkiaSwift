@@ -1,6 +1,6 @@
 import CSkia
 
-struct PlatformColorShift {
+public struct PlatformColorShift {
   let a: Int32
   let r: Int32
   let g: Int32
@@ -21,11 +21,11 @@ struct PlatformColorShift {
 
 public typealias ImageInfo = sk_imageinfo_t
 
-extension ImageInfo {
+public extension ImageInfo {
   static let platformColorType = ColorType(rawValue: sk_colortype_get_default_8888().rawValue)
   static let platformColorShift = PlatformColorShift()
 
-  public init(_ width: Int32, _ height: Int32, _ colorType: ColorType, _ alphaType: AlphaType) {
+  init(_ width: Int32, _ height: Int32, _ colorType: ColorType, _ alphaType: AlphaType) {
     self.init()
     self.width = width
     self.height = height

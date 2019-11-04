@@ -5,24 +5,24 @@ infix operator -: AdditionPrecedence
 
 public typealias Point = sk_point_t
 
-extension Point {
-  public static func normalize(_ point: Point) -> Point {
+public extension Point {
+  static func normalize(_ point: Point) -> Point {
     let ls = point.x * point.x + point.y * point.y
     let invNorm = 1.0 / ls.squareRoot()
     return Point(point.x * invNorm, point.y * invNorm)
   }
 
-  public static func distance(_ point: Point, _ other: Point) -> Float {
+  static func distance(_ point: Point, _ other: Point) -> Float {
     distanceSquared(point, other).squareRoot()
   }
 
-  public static func distanceSquared(_ point: Point, _ other: Point) -> Float {
+  static func distanceSquared(_ point: Point, _ other: Point) -> Float {
     let dx = point.x - other.x
     let dy = point.y - other.y
     return dx * dx + dy * dy
   }
 
-  public static func reflect(_ point: Point, _ normal: Point) -> Point {
+  static func reflect(_ point: Point, _ normal: Point) -> Point {
     let dot = point.x * point.x + point.y * point.y
     return Point(
       point.x - 2.0 * dot * normal.x,
@@ -30,35 +30,35 @@ extension Point {
     )
   }
 
-  public static func +(_ pt: Point, _ sz: Point) -> Point {
+  static func +(_ pt: Point, _ sz: Point) -> Point {
     Point(pt.x + sz.x, pt.y + sz.y)
   }
 
-  public static func +(_ pt: Point, _ sz: PointI) -> Point {
+  static func +(_ pt: Point, _ sz: PointI) -> Point {
     Point(pt.x + Float(sz.x), pt.y + Float(sz.y))
   }
 
-  public static func +(_ pt: Point, _ sz: Size) -> Point {
+  static func +(_ pt: Point, _ sz: Size) -> Point {
     Point(pt.x + sz.w, pt.y + sz.h)
   }
 
-  public static func +(_ pt: Point, _ sz: SizeI) -> Point {
+  static func +(_ pt: Point, _ sz: SizeI) -> Point {
     Point(pt.x + Float(sz.w), pt.y + Float(sz.h))
   }
 
-  public static func -(_ pt: Point, _ sz: Point) -> Point {
+  static func -(_ pt: Point, _ sz: Point) -> Point {
     Point(pt.x - sz.x, pt.y - sz.y)
   }
 
-  public static func -(_ pt: Point, _ sz: PointI) -> Point {
+  static func -(_ pt: Point, _ sz: PointI) -> Point {
     Point(pt.x - Float(sz.x), pt.y - Float(sz.y))
   }
 
-  public static func -(_ pt: Point, _ sz: Size) -> Point {
+  static func -(_ pt: Point, _ sz: Size) -> Point {
     Point(pt.x - sz.w, pt.y - sz.w)
   }
 
-  public static func -(_ pt: Point, _ sz: SizeI) -> Point {
+  static func -(_ pt: Point, _ sz: SizeI) -> Point {
     Point(pt.x - Float(sz.w), pt.y - Float(sz.w))
   }
 
@@ -76,12 +76,12 @@ extension Point {
     x * x + y * y
   }
 
-  public mutating func offset(_ p: Point) {
+  mutating func offset(_ p: Point) {
     x += p.x
     y += p.y
   }
 
-  public mutating func offset(_ dx: Float, _ dy: Float) {
+  mutating func offset(_ dx: Float, _ dy: Float) {
     x += dx
     y += dy
   }
@@ -89,8 +89,8 @@ extension Point {
 
 public typealias PointI = sk_ipoint_t
 
-extension PointI {
-  public static func normalize(_ point: PointI) -> PointI {
+public extension PointI {
+  static func normalize(_ point: PointI) -> PointI {
     let x = Float(point.x)
     let y = Float(point.y)
     let ls = x * x + y * y
@@ -98,17 +98,17 @@ extension PointI {
     return PointI(Int32(x * invNorm), Int32(y * invNorm))
   }
 
-  public static func distance(_ point: PointI, _ other: PointI) -> Float {
+  static func distance(_ point: PointI, _ other: PointI) -> Float {
     Float(distanceSquared(point, other)).squareRoot()
   }
 
-  public static func distanceSquared(_ point: PointI, _ other: PointI) -> Int32 {
+  static func distanceSquared(_ point: PointI, _ other: PointI) -> Int32 {
     let dx = point.x - other.x
     let dy = point.y - other.y
     return dx * dx + dy * dy
   }
 
-  public static func reflect(_ point: PointI, _ normal: PointI) -> PointI {
+  static func reflect(_ point: PointI, _ normal: PointI) -> PointI {
     let dot = point.x * point.x + point.y * point.y
     return PointI(
       point.x - 2 * dot * normal.x,
@@ -116,37 +116,37 @@ extension PointI {
     )
   }
 
-  public static func ceiling(_ value: Point) -> PointI {
+  static func ceiling(_ value: Point) -> PointI {
     let x = value.x.rounded(.up)
     let y = value.y.rounded(.up)
     return PointI(Int32(x), Int32(y))
   }
 
-  public static func round(_ value: Point) -> PointI {
+  static func round(_ value: Point) -> PointI {
     let x = value.x.rounded()
     let y = value.y.rounded()
     return PointI(Int32(x), Int32(y))
   }
 
-  public static func truncate(_ value: Point) -> PointI {
+  static func truncate(_ value: Point) -> PointI {
     let x = value.x.rounded(.down)
     let y = value.y.rounded(.down)
     return PointI(Int32(x), Int32(y))
   }
 
-  public static func +(_ pt: PointI, _ sz: PointI) -> PointI {
+  static func +(_ pt: PointI, _ sz: PointI) -> PointI {
     PointI(pt.x + sz.x, pt.y + sz.y)
   }
 
-  public static func +(_ pt: PointI, _ sz: SizeI) -> PointI {
+  static func +(_ pt: PointI, _ sz: SizeI) -> PointI {
     PointI(pt.x + sz.w, pt.y + sz.h)
   }
 
-  public static func -(_ pt: PointI, _ sz: PointI) -> PointI {
+  static func -(_ pt: PointI, _ sz: PointI) -> PointI {
     PointI(pt.x - sz.x, pt.y - sz.y)
   }
 
-  public static func -(_ pt: PointI, _ sz: SizeI) -> PointI {
+  static func -(_ pt: PointI, _ sz: SizeI) -> PointI {
     PointI(pt.x - sz.w, pt.y - sz.h)
   }
 
@@ -160,20 +160,20 @@ extension PointI {
     self.init(sz.w, sz.h)
   }
 
-  public var length: Float {
+  var length: Float {
     Float(lengthSquared).squareRoot()
   }
 
-  public var lengthSquared: Int32 {
+  var lengthSquared: Int32 {
     x * x + y * y
   }
 
-  public mutating func offset(_ p: PointI) {
+  mutating func offset(_ p: PointI) {
     x += p.x
     y += p.y
   }
 
-  public mutating func offset(_ dx: Int32, _ dy: Int32) {
+  mutating func offset(_ dx: Int32, _ dy: Int32) {
     x += x
     y += y
   }
@@ -181,12 +181,12 @@ extension PointI {
 
 public typealias Point3 = sk_point3_t
 
-extension Point3 {
-  public static func +(_ pt: Point3, _ sz: Point3) -> Point3 {
+public extension Point3 {
+  static func +(_ pt: Point3, _ sz: Point3) -> Point3 {
     Point3(pt.x + sz.x, pt.y + sz.y, pt.z + sz.z)
   }
 
-  public static func -(_ pt: Point3, _ sz: Point3) -> Point3 {
+  static func -(_ pt: Point3, _ sz: Point3) -> Point3 {
     Point3(pt.x - sz.x, pt.y - sz.y, pt.z - sz.z)
   }
 
@@ -200,56 +200,56 @@ extension Point3 {
 
 public typealias Size = sk_size_t
 
-extension Size {
-  public static func +(_ sz1: Size, _ sz2: Size) -> Size {
+public extension Size {
+  static func +(_ sz1: Size, _ sz2: Size) -> Size {
     Size(sz1.w + sz2.w, sz1.h + sz2.h)
   }
 
-  public static func -(_ sz1: Size, _ sz2: Size) -> Size {
+  static func -(_ sz1: Size, _ sz2: Size) -> Size {
     Size(sz1.w - sz2.w, sz1.h - sz2.h)
   }
 
-  public init(_ w: Float, _ h: Float) {
+  init(_ w: Float, _ h: Float) {
     self.init()
     self.w = w
     self.h = h
   }
 
-  public init(_ point: Point) {
+  init(_ point: Point) {
     self.init(point.x, point.y)
   }
 
-  public func toPoint() -> Point {
+  func toPoint() -> Point {
 		Point(w, h)
   }
 
-  public func toSizeI() -> SizeI {
+  func toSizeI() -> SizeI {
     SizeI(Int32(w), Int32(h))
   }
 }
 
 public typealias SizeI = sk_isize_t
 
-extension SizeI {
-  public static func +(_ sz1: SizeI, _ sz2: SizeI) -> SizeI {
+public extension SizeI {
+  static func +(_ sz1: SizeI, _ sz2: SizeI) -> SizeI {
     SizeI(sz1.w + sz2.w, sz1.h + sz2.h)
   }
 
-  public static func -(_ sz1: SizeI, _ sz2: SizeI) -> SizeI {
+  static func -(_ sz1: SizeI, _ sz2: SizeI) -> SizeI {
     SizeI(sz1.w - sz2.w, sz1.h - sz2.h)
   }
 
-  public init(_ w: Int32, _ h: Int32) {
+  init(_ w: Int32, _ h: Int32) {
     self.init()
     self.w = w
     self.h = h
   }
 
-  public init(_ point: PointI) {
+  init(_ point: PointI) {
     self.init(point.x, point.y)
   }
 
-  public func toPointI() -> PointI {
+  func toPointI() -> PointI {
     PointI(w, h)
   }
 
@@ -260,30 +260,30 @@ extension SizeI {
 
 public typealias Rect = sk_rect_t
 
-extension Rect {
-  public static func create(location: Point, size: Size) -> Rect {
+public extension Rect {
+  static func create(location: Point, size: Size) -> Rect {
     create(x: location.x, y: location.y, width: size.w, height: size.h)
   }
 
-  public static func create(size: Size) -> Rect {
+  static func create(size: Size) -> Rect {
     create(location: Point(0, 0), size: size)
   }
 
-  public static func create(width: Float, height: Float) -> Rect {
+  static func create(width: Float, height: Float) -> Rect {
     Rect(0, 0, width, height)
   }
 
-  public static func create(x: Float, y: Float, width: Float, height: Float) -> Rect {
+  static func create(x: Float, y: Float, width: Float, height: Float) -> Rect {
     Rect(x, y, x + width, y + height)
   }
 
-  public static func inflate(_ rect: Rect, _ x: Float, _ y: Float) -> Rect {
+  static func inflate(_ rect: Rect, _ x: Float, _ y: Float) -> Rect {
     var r = Rect(rect.left, rect.top, rect.right, rect.bottom)
     r.inflate(x, y)
     return r
   }
 
-  public static func intersect(_ a: Rect, _ b: Rect) -> Rect {
+  static func intersect(_ a: Rect, _ b: Rect) -> Rect {
     if (!a.intersectsWithInclusive(b)) {
       return Rect(0, 0, 0, 0)
     }
@@ -296,7 +296,7 @@ extension Rect {
     )
   }
 
-  public static func union(_ a: Rect, _ b: Rect) -> Rect {
+  static func union(_ a: Rect, _ b: Rect) -> Rect {
 		Rect(
       min(a.left, b.left),
       min(a.top, b.top),
@@ -305,7 +305,7 @@ extension Rect {
     )
   }
 
-  public init(_ left: Float, _ top: Float, _ right: Float, _ bottom: Float) {
+  init(_ left: Float, _ top: Float, _ right: Float, _ bottom: Float) {
     self.init()
     self.left = left
     self.top = top
@@ -313,23 +313,30 @@ extension Rect {
     self.bottom = bottom
   }
 
-  public var width: Float {
+  var empty: Bool {
+    Utils.nearlyEqual(left, 0) &&
+    Utils.nearlyEqual(top, 0) &&
+    Utils.nearlyEqual(right, 0) &&
+    Utils.nearlyEqual(bottom, 0)
+  }
+
+  var width: Float {
     right - left
   }
 
-  public var height: Float {
+  var height: Float {
     bottom - top
   }
 
-  public var midX: Float {
+  var midX: Float {
     left + width / 2
   }
 
-  public var midY: Float {
+  var midY: Float {
     top + height / 2
   }
 
-  public var size: Size {
+  var size: Size {
     get {
       Size(width, height)
     }
@@ -339,7 +346,7 @@ extension Rect {
     }
   }
 
-  public var location: Point {
+  var location: Point {
     get {
       Point(left, top)
     }
@@ -349,7 +356,7 @@ extension Rect {
     }
   }
 
-  public var standardized: Rect {
+  var standardized: Rect {
     get {
       if (left > right) {
         if (top > bottom) {
@@ -367,62 +374,62 @@ extension Rect {
     }
   }
 
-  public func aspectFit(_ size: Size) -> Rect {
+  func aspectFit(_ size: Size) -> Rect {
     aspectResize(size, true)
   }
 
-  public func aspectFill(_ size: Size) -> Rect {
+  func aspectFill(_ size: Size) -> Rect {
     aspectResize(size, false)
   }
 
-  public mutating func inflate(_ size: Size) {
+  mutating func inflate(_ size: Size) {
     inflate(size.w, size.h)
   }
 
-  public mutating func inflate(_ x: Float, _ y: Float) {
+  mutating func inflate(_ x: Float, _ y: Float) {
     left -= x
     top -= y
     right += x
     bottom += y
   }
 
-  public mutating func intersect(rect: Rect) {
+  mutating func intersect(rect: Rect) {
 	  self = Rect.intersect(self, rect)
   }
 
-  public func intersectsWith(_ rect: Rect) -> Bool {
+  func intersectsWith(_ rect: Rect) -> Bool {
     (left < rect.right) && (right > rect.left) && (top < rect.bottom) && (bottom > rect.top)
   }
 
-  public func intersectsWithInclusive(_ rect: Rect) -> Bool {
+  func intersectsWithInclusive(_ rect: Rect) -> Bool {
     (left <= rect.right) && (right >= rect.left) && (top <= rect.bottom) && (bottom >= rect.top)
   }
 
-  public mutating func union(rect: Rect) {
+  mutating func union(rect: Rect) {
     self = Rect.union(self, rect)
   }
 
-  public func contains(_ x: Float, _ y: Float) -> Bool {
+  func contains(_ x: Float, _ y: Float) -> Bool {
     (x >= left) && (x < right) && (y >= top) && (y < bottom)
   }
 
-  public func contains(_ pt: Point) -> Bool {
+  func contains(_ pt: Point) -> Bool {
     contains(pt.x, pt.y)
   }
 
-  public func contains(_ rect: Rect) -> Bool {
+  func contains(_ rect: Rect) -> Bool {
     (left <= rect.left) && (right >= rect.right) &&
     (top <= rect.top) && (bottom >= rect.bottom)
   }
 
-  public mutating func offset(_ x: Float, _ y: Float) {
+  mutating func offset(_ x: Float, _ y: Float) {
     left += x
     top += y
     right += x
     bottom += y
   }
 
-  public mutating func offset(_ pos: Point) {
+  mutating func offset(_ pos: Point) {
     offset(pos.x, pos.y)
   }
 
@@ -453,28 +460,28 @@ extension Rect {
 
 public typealias RectI = sk_irect_t
 
-extension RectI {
-  public static func create(size: SizeI) -> RectI {
+public extension RectI {
+  static func create(size: SizeI) -> RectI {
     create(x: 0, y: 0, width: size.w, height: size.h)
   }
 
-  public static func create(location: PointI, size: SizeI) -> RectI {
+  static func create(location: PointI, size: SizeI) -> RectI {
     create(x: location.x, y: location.y, width: size.w, height: size.h)
   }
 
-  public static func create(width: Int32, height: Int32) -> RectI {
+  static func create(width: Int32, height: Int32) -> RectI {
     RectI(0, 0, width, height)
   }
 
-  public static func create(x: Int32, y: Int32, width: Int32, height: Int32) -> RectI {
+  static func create(x: Int32, y: Int32, width: Int32, height: Int32) -> RectI {
     RectI(x, y, x + width, y + height)
   }
 
-  public static func ceiling(value: Rect) -> RectI {
-    ceiling(value: value, outwards: false)
+  static func ceiling(_ value: Rect) -> RectI {
+    ceiling(value, outwards: false)
   }
 
-  public static func ceiling(value: Rect, outwards: Bool) -> RectI {
+  static func ceiling(_ value: Rect, outwards: Bool) -> RectI {
     let x = Int32(outwards && value.width > 0 ? value.left.rounded(.down) : value.left.rounded(.up))
     let y = Int32(outwards && value.height > 0 ? value.top.rounded(.down) : value.top.rounded(.up))
     let r = Int32(outwards && value.width < 0 ? value.right.rounded(.down) : value.right.rounded(.up))
@@ -482,7 +489,7 @@ extension RectI {
     return RectI(x, y, r, b)
   }
 
-  public static func round(value: Rect) -> RectI {
+  static func round(value: Rect) -> RectI {
     let x = Int32(value.left.rounded())
     let y = Int32(value.top.rounded())
     let r = Int32(value.right.rounded())
@@ -490,11 +497,11 @@ extension RectI {
     return RectI(x, y, r, b)
   }
 
-  public static func floor(value: Rect) -> RectI {
+  static func floor(value: Rect) -> RectI {
     floor(value: value, inwards: false)
   }
 
-  public static func floor(value: Rect, inwards: Bool) -> RectI {
+  static func floor(value: Rect, inwards: Bool) -> RectI {
     let x = Int32(inwards && value.width > 0 ? value.left.rounded(.up) : value.left.rounded(.down))
     let y = Int32(inwards && value.height > 0 ? value.top.rounded(.up) : value.top.rounded(.down))
     let r = Int32(inwards && value.width < 0 ? value.right.rounded(.up) : value.right.rounded(.down))
@@ -502,13 +509,13 @@ extension RectI {
     return RectI(x, y, r, b)
   }
 
-  public static func inflate(_ rect: RectI, _ x: Int32, _ y: Int32) -> RectI {
+  static func inflate(_ rect: RectI, _ x: Int32, _ y: Int32) -> RectI {
     var r = RectI(rect.left, rect.top, rect.right, rect.bottom)
     r.inflate(x, y)
     return r
   }
 
-  public static func intersect(_ a: RectI, _ b: RectI) -> RectI {
+  static func intersect(_ a: RectI, _ b: RectI) -> RectI {
     if !a.intersectsWithInclusive(b) {
       return RectI(0, 0, 0, 0)
     }
@@ -521,7 +528,7 @@ extension RectI {
     )
   }
 
-  public static func truncate(_ value: Rect) -> RectI {
+  static func truncate(_ value: Rect) -> RectI {
     let x = Int32(value.left)
     let y = Int32(value.top)
     let r = Int32(value.right)
@@ -529,7 +536,7 @@ extension RectI {
     return RectI (x, y, r, b)
   }
 
-  public static func union(_ a: RectI, _ b: RectI) -> RectI {
+  static func union(_ a: RectI, _ b: RectI) -> RectI {
     return RectI(
       min(a.left, b.left),
       min(a.top, b.top),
@@ -538,7 +545,7 @@ extension RectI {
     )
   }
 
-  public init(_ left: Int32, _ top: Int32, _ right: Int32, _ bottom: Int32) {
+  init(_ left: Int32, _ top: Int32, _ right: Int32, _ bottom: Int32) {
     self.init()
     self.left = left
     self.top = top
@@ -546,23 +553,30 @@ extension RectI {
     self.bottom = bottom
   }
 
-  public var width: Int32 {
+  var empty: Bool {
+    left == 0 &&
+    top == 0 &&
+    right == 0 &&
+    bottom == 0
+  }
+
+  var width: Int32 {
     right - left
   }
 
-  public var height: Int32 {
+  var height: Int32 {
     bottom - top
   }
 
-  public var midX: Int32 {
+  var midX: Int32 {
     left + width / 2
   }
 
-  public var midY: Int32 {
+  var midY: Int32 {
     top + height / 2
   }
 
-  public var size: SizeI {
+  var size: SizeI {
     get {
       SizeI(width, height)
     }
@@ -572,7 +586,7 @@ extension RectI {
     }
   }
 
-  public var location: PointI {
+  var location: PointI {
     get {
       PointI(left, top)
     }
@@ -582,7 +596,7 @@ extension RectI {
     }
   }
 
-  public var standardized: RectI {
+  var standardized: RectI {
     get {
       if (left > right) {
         if (top > bottom) {
@@ -600,62 +614,62 @@ extension RectI {
     }
   }
 
-  public func aspectFit(_ size: SizeI) -> RectI {
+  func aspectFit(_ size: SizeI) -> RectI {
   	RectI.truncate(toRect().aspectFit(size.toSize()))
   }
 
-  public func aspectFill(_ size: SizeI) -> RectI {
+  func aspectFill(_ size: SizeI) -> RectI {
     RectI.truncate(toRect().aspectFill(size.toSize()))
   }
 
-  public mutating func inflate(_ size: SizeI) {
+  mutating func inflate(_ size: SizeI) {
     inflate(size.w, size.h)
   }
 
-  public mutating func inflate(_ width: Int32, _ height: Int32) {
+  mutating func inflate(_ width: Int32, _ height: Int32) {
     left -= width
     top -= height
     right += width
     bottom += height
   }
 
-  public mutating func intersect(_ rect: RectI) {
+  mutating func intersect(_ rect: RectI) {
     self = RectI.intersect(self, rect)
   }
 
-  public func intersectsWith(_ rect: RectI) -> Bool {
+  func intersectsWith(_ rect: RectI) -> Bool {
     (left < rect.right) && (right > rect.left) && (top < rect.bottom) && (bottom > rect.top)
   }
 
-  public func intersectsWithInclusive(_ rect: RectI) -> Bool {
+  func intersectsWithInclusive(_ rect: RectI) -> Bool {
     (left <= rect.right) && (right >= rect.left) && (top <= rect.bottom) && (bottom >= rect.top)
   }
 
-  public mutating func union(_ rect: RectI) {
+  mutating func union(_ rect: RectI) {
     self = RectI.union(self, rect)
   }
 
-  public func contains(_ x: Int32, _ y: Int32) -> Bool {
+  func contains(_ x: Int32, _ y: Int32) -> Bool {
     (x >= left) && (x < right) && (y >= top) && (y < bottom)
   }
 
-  public func contains(_ pt: PointI) -> Bool {
+  func contains(_ pt: PointI) -> Bool {
     contains(pt.x, pt.y)
   }
 
-  public func contains(_ rect: RectI) -> Bool {
+  func contains(_ rect: RectI) -> Bool {
     (left <= rect.left) && (right >= rect.right) &&
     (top <= rect.top) && (bottom >= rect.bottom)
   }
 
-  public mutating func offset(_ x: Int32, _ y: Int32) {
+  mutating func offset(_ x: Int32, _ y: Int32) {
     left += x
     top += y
     right += x
     bottom += y
   }
 
-  public mutating func offset(_ pos: PointI) {
+  mutating func offset(_ pos: PointI) {
     offset(pos.x, pos.y)
   }
 

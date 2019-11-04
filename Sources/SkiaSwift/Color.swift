@@ -43,8 +43,6 @@ public extension PMColor {
 }
 
 public extension Color {
-  private static let EPSILON: Float = 0.001
-
   static func fromHsl(h: Float, s: Float, l: Float, a: UInt8 = 255) -> Color {
     // Convert from percentages
     let hp = h / 360
@@ -57,7 +55,7 @@ public extension Color {
     var b = lp * 255
 
     // HSL from 0 to 1
-    if abs(sp) > Color.EPSILON {
+    if !Utils.nearlyEqual(sp, 0) {
       var v2: Float
       if lp < 0.5 {
         v2 = lp * (1 + sp)
@@ -109,9 +107,9 @@ public extension Color {
     var b = vp
 
     // HSL from 0 to 1
-    if abs(sp) > Color.EPSILON {
+    if !Utils.nearlyEqual(sp, 0) {
       hp = hp * 6
-      if abs(hp - 6) < Color.EPSILON {
+      if Utils.nearlyEqual(hp, 6) {
         hp = 0  // H must be < 1
       }
 
@@ -215,7 +213,7 @@ public extension Color {
     l = (mx + mn) / 2
 
     // Chromatic data...
-    if abs(delta) > Color.EPSILON {
+    if !Utils.nearlyEqual(delta, 0) {
       if l < 0.5 {
         s = delta / (mx + mn)
       } else {
@@ -226,9 +224,9 @@ public extension Color {
       let deltaG = (((mx - g) / 6) + (delta / 2)) / delta
       let deltaB = (((mx - b) / 6) + (delta / 2)) / delta
 
-      if abs(r - mx) < Color.EPSILON {  // r == max
+      if Utils.nearlyEqual(r, mx) {
         h = deltaB - deltaG
-      } else if abs(g - mx) < Color.EPSILON {  // g == max
+      } else if Utils.nearlyEqual(g, mx) {
         h = (1.0 / 3) + deltaR - deltaB
       } else {  // b == max
         h = (2.0 / 3) + deltaG - deltaR
@@ -270,16 +268,16 @@ public extension Color {
     v = mx
 
     // Chromatic data...
-    if abs(delta) > Color.EPSILON {
+    if !Utils.nearlyEqual(delta, 0) {
       s = delta / mx
 
       let deltaR = (((mx - r) / 6) + (delta / 2)) / delta
       let deltaG = (((mx - g) / 6) + (delta / 2)) / delta
       let deltaB = (((mx - b) / 6) + (delta / 2)) / delta
 
-      if abs(r - mx) < Color.EPSILON {  // r == max
+      if Utils.nearlyEqual(r, mx) {
         h = deltaB - deltaG
-      } else if abs(g - mx) < Color.EPSILON {  // g == max
+      } else if Utils.nearlyEqual(g, mx) {
         h = (1.0 / 3) + deltaR - deltaB
       } else {  // b == max
         h = (2.0 / 3) + deltaG - deltaR

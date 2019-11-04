@@ -20,7 +20,7 @@ extension Matrix {
   }
 
   public static func makeScale(_ sx: Float, _ sy: Float) -> Matrix {
-    if (sx == 1 && sy == 1) {
+    if Utils.nearlyEqual(sx, 1) && Utils.nearlyEqual(sy, 1) {
       return makeIdentity()
     }
 
@@ -35,7 +35,7 @@ extension Matrix {
   /// The pivot point is the coordinate that should remain unchanged by the
   /// specified transformation.
   public static func makeScale(_ sx: Float, _ sy: Float, _ pivotx: Float, _ pivoty: Float) -> Matrix {
-    if (sx == 1 && sy == 1) {
+    if Utils.nearlyEqual(sx, 1) && Utils.nearlyEqual(sy, 1) {
       return makeIdentity()
     }
 
@@ -52,7 +52,7 @@ extension Matrix {
   }
 
   public static func makeTranslation(_ dx: Float, _ dy: Float) -> Matrix {
-    if (dx == 0 && dy == 0) {
+    if Utils.nearlyEqual(dx, 0) && Utils.nearlyEqual(dy, 0) {
       return makeIdentity()
     }
 

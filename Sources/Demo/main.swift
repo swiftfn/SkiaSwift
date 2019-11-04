@@ -20,15 +20,15 @@ func emitPng(_ path: String, _ surface: Surface) {
 
 func draw(_ canvas: Canvas) {
     let fill = Paint()
-    fill.color = Color.argb(0xFF, 0x00, 0x00, 0xFF)
+    fill.color = Color(r: 0, g: 0, b: 0xFF)
     canvas.drawPaint(fill)
 
-    fill.color = Color.argb(0xFF, 0x00, 0xFF, 0xFF)
+    fill.color = Color(r: 0, g: 0xFF, b: 0xFF)
     let rect = Rect(100.0, 100.0, 540.0, 380.0)
     canvas.drawRect(rect, fill)
 
     let stroke = Paint()
-    stroke.color = Color.argb(0xFF, 0xFF, 0x00, 0x00)
+    stroke.color = Color(r: 0xFF, g: 0, b: 0)
     stroke.antialias = true
     stroke.strokeWidth = 5.0
 
@@ -40,7 +40,7 @@ func draw(_ canvas: Canvas) {
         .lineTo(590.0, 430.0)
     canvas.drawPath(path, stroke)
 
-    fill.color = Color.argb(0x80, 0x00, 0xFF, 0x00)
+    fill.color = Color(r: 0, g: 0xFF, b: 0, a: 0x80)
     let rect2 = Rect(120.0, 120.0, 520.0, 360.0)
     canvas.drawOval(rect2, fill)
 }

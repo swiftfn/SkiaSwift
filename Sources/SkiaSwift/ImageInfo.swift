@@ -25,11 +25,11 @@ extension ImageInfo {
   static let platformColorType = ColorType(rawValue: sk_colortype_get_default_8888().rawValue)
   static let platformColorShift = PlatformColorShift()
 
-  public init(_ width: Int32, _ height: Int32, _ colorType: sk_colortype_t, _ alphaType: sk_alphatype_t) {
+  public init(_ width: Int32, _ height: Int32, _ colorType: ColorType, _ alphaType: AlphaType) {
     self.init()
     self.width = width
     self.height = height
-    self.colorType = colorType
-    self.alphaType = alphaType
+    self.colorType = colorType.toC()
+    self.alphaType = alphaType.toC()
   }
 }

@@ -1,13 +1,50 @@
 import CSkia
 import Foundation
 
-public typealias CodecResult = sk_codec_result_t
+// Swift sees C's enums as UInt32
 
-public typealias EncodedOrigin = sk_encodedorigin_t
+public enum CodecResult: UInt32 {
+  case success,
+  incompleteInput,
+  errorInInput,
+  invalidConversion,
+  invalidScale,
+  invalidParameters,
+  invalidInput,
+  couldNotRewind,
+  internalError,
+  unimplemented
+}
 
-public typealias EncodedImageFormat = sk_encoded_image_format_t
+public enum EncodedOrigin: UInt32 {
+  case topLeft = 1,
+  topRight,
+  bottomRight,
+  bottomLeft,
+  leftTop,
+  rightTop,
+  rightBottom,
+  leftBottom
 
-public enum FontStyleWeight: Int {
+  public static let defaultOrigin = topLeft
+}
+
+public enum EncodedImageFormat: UInt32 {
+  case bmp,
+  gif,
+  ico,
+  jpeg,
+  png,
+  wbmp,
+  webp,
+  pkm,
+  ktx,
+  astc,
+  dng
+  // heif  // appears to be development still
+}
+
+public enum FontStyleWeight: UInt32 {
   case invisible  = 0
   case thin       = 100
   case extraLight = 200
@@ -21,7 +58,7 @@ public enum FontStyleWeight: Int {
   case extraBlack = 1000
 }
 
-public enum FontStyleWidth: Int {
+public enum FontStyleWidth: UInt32 {
   case ultraCondensed = 1,
   extraCondensed,
   condensed,
@@ -33,83 +70,252 @@ public enum FontStyleWidth: Int {
   ultraExpanded
 }
 
-public typealias FontStyleSlant = sk_font_style_slant_t
+public enum FontStyleSlant: UInt32 {
+  case upright,
+  italic,
+  oblique
+}
 
-public typealias PointMode = sk_point_mode_t
+public enum PointMode: UInt32 {
+  case points,
+  lines,
+  polygon
+}
 
-public typealias PathDirection = sk_path_direction_t
+public enum PathDirection: UInt32 {
+  case clockwise = 1,
+  counterClockwise
+}
 
-public typealias PathArcSize = sk_path_arc_size_t
+public enum PathArcSize: UInt32 {
+  case small,
+  large
+}
 
-public typealias PathFillType = sk_path_filltype_t
+public enum PathFillType: UInt32 {
+  case winding,
+  evenOdd,
+  inverseWinding,
+  inverseEvenOdd
+}
 
-public typealias PathSegmentMask = sk_path_segment_mask_t
+public enum PathSegmentMask: UInt32 {
+  case line  = 1  // 1 << 0
+  case quad  = 2  // 1 << 1
+  case conic = 4  // 1 << 2
+  case cubic = 8  // 1 << 3
+}
 
-public typealias ColorType = sk_colortype_t
+public enum ColorType: UInt32 {
+  case unknown,
+  alpha8,
+  rgb565,
+  argb4444,
+  rgba8888,
+  rgb888x,
+  bgra8888,
+  rgba1010102,
+  rgb101010x,
+  gray8,
+  rgbaF16
 
-public typealias AlphaType = sk_alphatype_t
-
-public typealias ShaderTileMode = sk_shader_tilemode_t
-
-public typealias BlurStyle = sk_blurstyle_t
-
-public typealias BlendMode = sk_blendmode_t
-
-public typealias PixelGeometry = sk_pixelgeometry_t
-
-extension PixelGeometry {
-  public static func isBgr(pg: PixelGeometry) -> Bool {
-    return pg == BGR_H_SK_PIXELGEOMETRY || pg == BGR_V_SK_PIXELGEOMETRY
-  }
-
-  public static func isRgb(pg: PixelGeometry) -> Bool {
-    return pg == RGB_H_SK_PIXELGEOMETRY || pg == RGB_V_SK_PIXELGEOMETRY
-  }
-
-  public static func isVertical(pg: PixelGeometry) -> Bool {
-    return pg == BGR_V_SK_PIXELGEOMETRY || pg == RGB_V_SK_PIXELGEOMETRY
-  }
-
-  public static func isHorizontal(pg: PixelGeometry) -> Bool {
-    return pg == BGR_H_SK_PIXELGEOMETRY || pg == RGB_H_SK_PIXELGEOMETRY
+  func toC() -> sk_colortype_t {
+    return sk_colortype_t(self.rawValue)
   }
 }
 
-public typealias SurfacePropsFlags = sk_surfaceprops_flags_t
+public enum AlphaType: UInt32 {
+  case unknown,
+  opaque,
+  premul,
+  unpremul
 
-public typealias Encoding = sk_encoding_t
+  func toC() -> sk_alphatype_t {
+    return sk_alphatype_t(self.rawValue)
+  }
+}
 
-public typealias StrokeCap = sk_stroke_cap_t
+public enum ShaderTileMode: UInt32 {
+  case clamp,
+  repeatMode,
+  mirror
+}
 
-public typealias StrokeJoin = sk_stroke_join_t
+public enum BlurStyle: UInt32 {
+  case normal,
+  solid,
+  outer,
+  inner
+}
 
-public typealias TextAlign = sk_text_align_t
+public enum BlendMode: UInt32 {
+  case clear,
+  src,
+  dst,
+  srcOver,
+  dstOver,
+  srcIn,
+  dstIn,
+  srcOut,
+  dstOut,
+  srcATop,
+  sstATop,
+  xor,
+  plus,
+  modulate,
+  screen,
+  overlay,
+  darken,
+  lighten,
+  colorDodge,
+  colorBurn,
+  hardLight,
+  softLight,
+  difference,
+  exclusion,
+  multiply,
+  hue,
+  saturation,
+  color,
+  luminosity
+}
 
-public typealias TextEncoding = sk_text_encoding_t
+public enum PixelGeometry: UInt32 {
+  case unknown,
+  rgbHorizontal,
+  bgrHorizontal,
+  rgbVertical,
+  bgrVertical
 
-public typealias FilterQuality = sk_filter_quality_t
+  public static func isBgr(pg: PixelGeometry) -> Bool {
+    return pg == .bgrHorizontal || pg == .bgrVertical
+  }
 
-public typealias CropRectFlags = sk_crop_rect_flags_t
+  public static func isRgb(pg: PixelGeometry) -> Bool {
+    return pg == .rgbHorizontal || pg == .rgbVertical
+  }
 
-public typealias DropShadowImageFilterShadowMode = sk_drop_shadow_image_filter_shadow_mode_t
+  public static func isVertical(pg: PixelGeometry) -> Bool {
+    return pg == .bgrVertical || pg == .rgbVertical
+  }
 
-public typealias DisplacementMapEffectChannelSelectorType = sk_displacement_map_effect_channel_selector_type_t
+  public static func isHorizontal(pg: PixelGeometry) -> Bool {
+    return pg == .bgrHorizontal || pg == .rgbHorizontal
+  }
+}
 
-public typealias MatrixConvolutionTileMode = sk_matrix_convolution_tilemode_t
+public enum SurfacePropsFlags: UInt32 {
+  case none
+  case useDeviceIndependentFonts
+}
 
-public typealias PaintStyle = sk_paint_style_t
+public enum Encoding: UInt32 {
+  case utf8,
+  utf16,
+  utf32
+}
 
-public typealias PaintHinting = sk_paint_hinting_t
+public enum StrokeCap: UInt32 {
+  case butt,
+  round,
+  square
+}
 
-public typealias RegionOperation = sk_region_op_t
+public enum StrokeJoin: UInt32 {
+  case miter,
+  round,
+  bevel
+}
 
-public typealias ClipOperation = sk_clipop_t
+public enum TextAlign: UInt32 {
+  case left,
+  center,
+  right
+}
 
-public typealias CodecZeroInitialized = sk_codec_zero_initialized_t
+public enum TextEncoding: UInt32 {
+  case utf8,
+  utf16,
+  utf32,
+  glyphId
+}
 
-public typealias CodecScanlineOrder = sk_codec_scanline_order_t
+public enum FilterQuality: UInt32 {
+  case none,
+  low,
+  medium,
+  high
+}
 
-public typealias TransferFunctionBehavior = sk_transfer_function_behavior_t
+public enum CropRectFlags: UInt32 {
+  case hasNone = 0,
+  hasLeft = 0x01,
+  hasTop = 0x02,
+  hasWidth = 0x04,
+  hasHeight = 0x08,
+  hasAll = 0x0F
+}
+
+public enum DropShadowImageFilterShadowMode: UInt32 {
+  case drawShadowAndForeground,
+  drawShadowOnly
+}
+
+public enum DisplacementMapEffectChannelSelectorType: UInt32 {
+  case unknown,
+  r,
+  g,
+  b,
+  a
+}
+
+public enum MatrixConvolutionTileMode: UInt32 {
+  case clamp,
+  repeatMode,
+  clampToBlack
+}
+
+public enum PaintStyle: UInt32 {
+  case fill,
+  stroke,
+  strokeAndFill
+}
+
+public enum PaintHinting: UInt32 {
+  case noHinting,
+  slight,
+  normal,
+  full
+}
+
+public enum RegionOperation: UInt32 {
+  case difference,
+  intersect,
+  union,
+  xor,
+  reverseDifference,
+  replace
+}
+
+public enum ClipOperation: UInt32 {
+  case difference,
+  intersect
+}
+
+public enum CodecZeroInitialized: UInt32 {
+  case yes,
+  no
+}
+
+public enum CodecScanlineOrder: UInt32 {
+  case topDown,
+  bottomUp
+}
+
+public enum TransferFunctionBehavior: UInt32 {
+  case respect,
+  ignore
+}
 
 struct CodecOptionsInternal {
   var fZeroInitialized: CodecZeroInitialized
@@ -120,13 +326,13 @@ struct CodecOptionsInternal {
 }
 
 public struct CodecOptions {
-  public static let defaultOptions = CodecOptions(zeroInitialized: NO_SK_CODEC_ZERO_INITIALIZED)
+  public static let defaultOptions = CodecOptions(zeroInitialized: .no)
 
-  public var zeroInitialized: CodecZeroInitialized = NO_SK_CODEC_ZERO_INITIALIZED
+  public var zeroInitialized: CodecZeroInitialized = .no
   public var subset: RectI? = nil
   public var frameIndex: Int = 0
   public var priorFrame: Int = -1
-  public var premulBehavior: TransferFunctionBehavior = RESPECT_SK_TRANSFER_FUNCTION_BEHAVIOR
+  public var premulBehavior: TransferFunctionBehavior = .respect
 
   public init(zeroInitialized: CodecZeroInitialized) {
     self.zeroInitialized = zeroInitialized
@@ -157,9 +363,19 @@ public struct CodecOptions {
   }
 }
 
-public typealias CodecAnimationDisposalMethod = sk_codecanimation_disposalmethod_t
+public enum CodecAnimationDisposalMethod: UInt32 {
+  case keep = 1,
+  restoreBackgroundColor,
+  restorePrevious
+}
 
-public typealias CodecFrameInfo = sk_codec_frameinfo_t
+public struct CodecFrameInfo {
+  var requiredFrame: Int
+  var duration: Int
+  var fullyRecieved: UInt8
+  var alphaType: AlphaType
+  var disposalMethod: CodecAnimationDisposalMethod
+}
 
 public struct FontMetrics {
   private static let flagsUnderlineThicknessIsValid: UInt = 1  // 1 << 0
@@ -205,11 +421,25 @@ public struct FontMetrics {
   }
 }
 
-public typealias PathOp = sk_pathop_t
+public enum PathOp: UInt32 {
+  case difference,
+  intersect,
+  union,
+  xor,
+  reverseDifference
+}
 
-public typealias PathConvexity = sk_path_convexity_t
+public enum PathConvexity: UInt32 {
+  case unknown,
+  convex,
+  concave
+}
 
-public typealias LatticeRectType = sk_lattice_recttype_t
+public enum LatticeRectType: UInt32 {
+  case defaultType,
+  transparent,
+  fixedColor
+}
 
 struct SKLatticeInternal {
   var fXDivs: UnsafePointer<Int>
@@ -302,32 +532,32 @@ public struct DocumentPdfMetadata {
   }
 }
 
-public enum ColorSpaceGamut {
+public enum ColorSpaceGamut: UInt32 {
   case srgb,
   adobeRgb,
   dcip3D65,
   rec2020
 }
 
-public enum ColorSpaceRenderTargetGamma {
+public enum ColorSpaceRenderTargetGamma: UInt32 {
   case linear,
   srgb
 }
 
-public enum ColorSpaceType {
+public enum ColorSpaceType: UInt32 {
   case rgb,
   cmyk,
   gray
 }
 
-public enum NamedGamma {
+public enum NamedGamma: UInt32 {
   case linear,
   srgb,
   twoDotTwoCurve,
   nonStandard
 }
 
-public enum MaskFormat {
+public enum MaskFormat: UInt32 {
   case bw,
   a8,
   threeD,
@@ -335,7 +565,7 @@ public enum MaskFormat {
   lcd16
 }
 
-public enum Matrix44TypeMask: Int {
+public enum Matrix44TypeMask: UInt32 {
   case identity = 0,
   translate = 0x01,
   scale = 0x02,
@@ -343,18 +573,18 @@ public enum Matrix44TypeMask: Int {
   perspective = 0x08
 }
 
-public enum VertexMode {
+public enum VertexMode: UInt32 {
   case triangles,
   triangleStrip,
   triangleFan
 }
 
-public enum ImageCachingHint {
+public enum ImageCachingHint: UInt32 {
   case allow,
   disallow
 }
 
-public enum HighContrastConfigInvertStyle {
+public enum HighContrastConfigInvertStyle: UInt32 {
   case noInvert,
   invertBrightness,
   invertLightness
@@ -392,12 +622,12 @@ public struct HighContrastConfig {
   }
 }
 
-public enum BitmapAllocFlags: Int {
+public enum BitmapAllocFlags: UInt32 {
   case none,
   zeroPixels
 }
 
-public enum PngEncoderFilterFlags: Int {
+public enum PngEncoderFilterFlags: UInt32 {
   case noFilters = 0x00,
   none           = 0x08,
   sub            = 0x10,
@@ -410,7 +640,7 @@ public enum PngEncoderFilterFlags: Int {
 public struct PngEncoderOptions {
   var filterFlags: PngEncoderFilterFlags
   var zLibLevel: Int
-  var unpremulBehavior: TransferFunctionBehavior = RESPECT_SK_TRANSFER_FUNCTION_BEHAVIOR
+  var unpremulBehavior: TransferFunctionBehavior = .respect
   // TODO: get and set comments
 
   public static let defaultOptions = PngEncoderOptions(
@@ -429,13 +659,13 @@ public struct PngEncoderOptions {
   }
 }
 
-public enum JpegEncoderDownsample {
+public enum JpegEncoderDownsample: UInt32 {
   case downsample420,
   downsample422,
   downsample444
 }
 
-public enum JpegEncoderAlphaOption {
+public enum JpegEncoderAlphaOption: UInt32 {
   case ignore,
   blendOnBlack
 }
@@ -444,7 +674,7 @@ public struct JpegEncoderOptions {
   var quality: Int
   var downsample: JpegEncoderDownsample
   var alphaOption: JpegEncoderAlphaOption
-  var blendBehavior: TransferFunctionBehavior = RESPECT_SK_TRANSFER_FUNCTION_BEHAVIOR
+  var blendBehavior: TransferFunctionBehavior = .respect
 
   public static let defaultOptions = JpegEncoderOptions(
     quality: 100,
@@ -464,15 +694,18 @@ public struct JpegEncoderOptions {
   }
 }
 
-public typealias WebpEncoderCompression = sk_webpencoder_compression_t
+public enum WebpEncoderCompression: UInt32 {
+  case lossy,
+  lossless
+}
 
 public struct WebpEncoderOptions {
   var compression: WebpEncoderCompression
   var quality: Float
-  var unpremulBehavior: TransferFunctionBehavior = RESPECT_SK_TRANSFER_FUNCTION_BEHAVIOR
+  var unpremulBehavior: TransferFunctionBehavior = .respect
 
   public static let defaultOptions = WebpEncoderOptions(
-    compression: LOSSY_SK_WEBPENCODER_COMPTRESSION,
+    compression: .lossy,
     quality: 100
   )
 
@@ -487,6 +720,18 @@ public struct WebpEncoderOptions {
   }
 }
 
-public typealias RoundRectType = sk_rrect_type_t
+public enum RoundRectType: UInt32 {
+  case empty,
+  rect,
+  oval,
+  simple,
+  ninePatch,
+  complex
+}
 
-public typealias RoundRectCorner = sk_rrect_corner_t
+public enum RoundRectCorner: UInt32 {
+  case upperLeft,
+  upperRight,
+  lowerRight,
+  lowerLeft
+}

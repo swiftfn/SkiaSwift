@@ -42,7 +42,7 @@ public class Texture {
 
   var backend: Backend {
     get {
-      return gr_backendtexture_get_backend(handle)
+      return Backend.fromC(gr_backendtexture_get_backend(handle))
     }
   }
 

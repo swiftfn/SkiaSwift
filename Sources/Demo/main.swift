@@ -1,12 +1,11 @@
 // https://github.com/google/skia/tree/master/experimental/c-api-example
 // https://github.com/elegantchaos/CSkia
 
-import CSkia
 import SkiaSwift
 import Foundation
 
 func makeSurface(_ w: Int32, _ h: Int32) -> Surface {
-    let info = ImageInfo(w, h, RGBA_8888_SK_COLORTYPE, PREMUL_SK_ALPHATYPE)
+    let info = ImageInfo(w, h, .rgba8888, .premul)
     return Surface.raster(info)
 }
 

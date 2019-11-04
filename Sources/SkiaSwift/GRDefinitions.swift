@@ -1,10 +1,39 @@
 import CSkia
 
-public typealias SurfaceOrigin = gr_surfaceorigin_t
+// Swift sees C's enums as UInt32
 
-public typealias PixelConfig = gr_pixelconfig_t
+public enum SurfaceOrigin: UInt32 {
+  case topLeft,
+  bottomLeft
+}
 
-public typealias Backend = gr_backend_t
+public enum PixelConfig: UInt32 {
+  case unknown,
+  alpha8,
+  gray8,
+  rgb565,
+  rgba4444,
+  rgba8888,
+  rgb888,
+  bgra8888,
+  srgba8888,
+  sbgra8888,
+  rgba1010102,
+  rgbaFloat,
+  rgFloat,
+  alphaHalf,
+  rgbaHalf
+}
+
+public enum Backend: UInt32 {
+  case metal,
+  openGl,
+  vulkan
+
+  static func fromC(_ backend: gr_backend_t) -> Backend {
+    Backend(rawValue: backend.rawValue)!
+  }
+}
 
 public enum GlBackendState: UInt32 {
   case none      = 0,
@@ -17,7 +46,7 @@ public enum GlBackendState: UInt32 {
   stencil        = 64,    // 1 << 6
   pixelStore     = 128,   // 1 << 7
   program        = 256,   // 1 << 8
-  fixedFunction   = 512,   // 1 << 9
+  fixedFunction  = 512,   // 1 << 9
   misc           = 1024,  // 1 << 10
   pathRendering  = 2048,  // 1 << 11
   all            = 0xffff
@@ -35,51 +64,55 @@ public typealias GlTextureInfo = gr_gl_textureinfo_t
 extension ColorType {
   public func toGlSizedFormat() -> Int {
     switch (self) {
-      case ALPHA_8_SK_COLORTYPE:
-        return GlSizedFormat.ALPHA8
-      case RGB_565_SK_COLORTYPE:
-        return GlSizedFormat.RGB565
-      case ARGB_4444_SK_COLORTYPE:
-        return GlSizedFormat.RGBA4
-      case RGBA_8888_SK_COLORTYPE:
-        return GlSizedFormat.RGBA8
-      case RGB_888X_SK_COLORTYPE:
-        return GlSizedFormat.RGB8
-      case BGRA_8888_SK_COLORTYPE:
-        return GlSizedFormat.BGRA8
-      case RGBA_1010102_SK_COLORTYPE:
-        return GlSizedFormat.RGB10_A2
-      case GRAY_8_SK_COLORTYPE:
-        return GlSizedFormat.LUMINANCE8
-      case RGBA_F16_SK_COLORTYPE:
-        return GlSizedFormat.RGBA16F
-      default:
+      case .unknown:
         return 0
+      case .alpha8:
+        return GlSizedFormat.ALPHA8
+      case .rgb565:
+        return GlSizedFormat.RGB565
+      case .argb4444:
+        return GlSizedFormat.RGBA4
+      case .rgba8888:
+        return GlSizedFormat.RGBA8
+      case .rgb888x:
+        return GlSizedFormat.RGB8
+      case .bgra8888:
+        return GlSizedFormat.BGRA8
+      case .rgba1010102:
+        return GlSizedFormat.RGB10_A2
+      case .rgb101010x:
+        return 0
+      case .gray8:
+        return GlSizedFormat.LUMINANCE8
+      case .rgbaF16:
+        return GlSizedFormat.RGBA16F
     }
   }
 
   public func toPixelConfig() -> PixelConfig {
     switch (self) {
-      case ALPHA_8_SK_COLORTYPE:
-        return ALPHA_8_GR_PIXEL_CONFIG
-      case GRAY_8_SK_COLORTYPE:
-        return GRAY_8_GR_PIXEL_CONFIG
-      case RGB_565_SK_COLORTYPE:
-        return RGB_565_GR_PIXEL_CONFIG
-      case ARGB_4444_SK_COLORTYPE:
-        return RGBA_4444_GR_PIXEL_CONFIG
-      case RGBA_8888_SK_COLORTYPE:
-        return RGBA_8888_GR_PIXEL_CONFIG
-      case RGB_888X_SK_COLORTYPE:
-        return RGB_888_GR_PIXEL_CONFIG
-      case BGRA_8888_SK_COLORTYPE:
-        return BGRA_8888_GR_PIXEL_CONFIG
-      case RGBA_1010102_SK_COLORTYPE:
-        return RGBA_1010102_GR_PIXEL_CONFIG
-      case RGBA_F16_SK_COLORTYPE:
-        return RGBA_HALF_GR_PIXEL_CONFIG
-      default:
-        return UNKNOWN_GR_PIXEL_CONFIG
+      case .unknown:
+        return PixelConfig.unknown
+      case .alpha8:
+        return PixelConfig.alpha8
+      case .gray8:
+        return PixelConfig.gray8
+      case .rgb565:
+        return PixelConfig.rgb565
+      case .argb4444:
+        return PixelConfig.rgba4444
+      case .rgba8888:
+        return PixelConfig.rgba8888
+      case .rgb888x:
+        return PixelConfig.rgb888
+      case .bgra8888:
+        return PixelConfig.bgra8888
+      case .rgba1010102:
+        return PixelConfig.rgba1010102
+      case .rgbaF16:
+        return PixelConfig.rgbaHalf
+      case .rgb101010x:
+        return PixelConfig.unknown
     }
   }
 }
@@ -87,65 +120,71 @@ extension ColorType {
 extension PixelConfig {
   public func toGlSizedFormat() -> Int {
     switch (self) {
-      case ALPHA_8_GR_PIXEL_CONFIG:
+      case .alpha8:
         return GlSizedFormat.ALPHA8
-      case GRAY_8_GR_PIXEL_CONFIG:
+      case .gray8:
         return GlSizedFormat.LUMINANCE8
-      case RGB_565_GR_PIXEL_CONFIG:
+      case .rgb565:
         return GlSizedFormat.RGB565
-      case RGBA_4444_GR_PIXEL_CONFIG:
+      case .rgba4444:
         return GlSizedFormat.RGBA4
-      case RGBA_8888_GR_PIXEL_CONFIG:
+      case .rgba8888:
         return GlSizedFormat.RGBA8
-      case RGB_888_GR_PIXEL_CONFIG:
+      case .rgb888:
         return GlSizedFormat.RGB8
-      case BGRA_8888_GR_PIXEL_CONFIG:
+      case .bgra8888:
         return GlSizedFormat.BGRA8
-      case SRGBA_8888_GR_PIXEL_CONFIG:
+      case .srgba8888:
         return GlSizedFormat.SRGB8_ALPHA8
-      case SBGRA_8888_GR_PIXEL_CONFIG:
+      case .sbgra8888:
         return GlSizedFormat.SRGB8_ALPHA8
-      case RGBA_1010102_GR_PIXEL_CONFIG:
+      case .rgba1010102:
         return GlSizedFormat.RGB10_A2
-      case RGBA_FLOAT_GR_PIXEL_CONFIG:
+      case .rgbaFloat:
         return GlSizedFormat.RGBA32F
-      case RG_FLOAT_GR_PIXEL_CONFIG:
+      case .rgFloat:
         return GlSizedFormat.RG32F
-      case ALPHA_HALF_GR_PIXEL_CONFIG:
+      case .alphaHalf:
         return GlSizedFormat.R16F
-      case RGBA_HALF_GR_PIXEL_CONFIG:
+      case .rgbaHalf:
         return GlSizedFormat.RGBA16F
-      default:
+      case .unknown:
         return 0
     }
   }
 
   public func toColorType() -> ColorType {
     switch (self) {
-      case ALPHA_8_GR_PIXEL_CONFIG:
-        return ALPHA_8_SK_COLORTYPE
-      case GRAY_8_GR_PIXEL_CONFIG:
-        return GRAY_8_SK_COLORTYPE
-      case RGB_565_GR_PIXEL_CONFIG:
-        return RGB_565_SK_COLORTYPE
-      case RGBA_4444_GR_PIXEL_CONFIG:
-        return ARGB_4444_SK_COLORTYPE
-      case RGBA_8888_GR_PIXEL_CONFIG:
-        return RGBA_8888_SK_COLORTYPE
-      case RGB_888_GR_PIXEL_CONFIG:
-        return RGB_888X_SK_COLORTYPE
-      case BGRA_8888_GR_PIXEL_CONFIG:
-        return BGRA_8888_SK_COLORTYPE
-      case SRGBA_8888_GR_PIXEL_CONFIG:
-        return RGBA_8888_SK_COLORTYPE
-      case SBGRA_8888_GR_PIXEL_CONFIG:
-        return BGRA_8888_SK_COLORTYPE
-      case RGBA_1010102_GR_PIXEL_CONFIG:
-        return RGBA_1010102_SK_COLORTYPE
-      case RGBA_HALF_GR_PIXEL_CONFIG:
-        return RGBA_F16_SK_COLORTYPE
-      default:
-        return UNKNOWN_SK_COLORTYPE
+      case .unknown:
+        return ColorType.unknown
+      case .alpha8:
+        return ColorType.alpha8
+      case .gray8:
+        return ColorType.gray8
+      case .rgb565:
+        return ColorType.rgb565
+      case .rgba4444:
+        return ColorType.argb4444
+      case .rgba8888:
+        return ColorType.rgba8888
+      case .rgb888:
+        return ColorType.rgb888x
+      case .bgra8888:
+        return ColorType.bgra8888
+      case .srgba8888:
+        return ColorType.rgba8888
+      case .sbgra8888:
+        return ColorType.bgra8888
+      case .rgba1010102:
+        return ColorType.rgba1010102
+      case .rgbaFloat:
+        return ColorType.unknown
+      case .rgFloat:
+        return ColorType.unknown
+      case .alphaHalf:
+        return ColorType.unknown
+      case .rgbaHalf:
+        return ColorType.rgbaF16
     }
   }
 }

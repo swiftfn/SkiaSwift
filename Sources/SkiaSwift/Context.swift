@@ -9,7 +9,7 @@ public class Context {
 
   convenience init(backend: Backend) {
     switch (backend) {
-      case OPENGL_GR_BACKEND:
+      case .openGl:
         self.init(glInterface: nil)
       default:
         fatalError("Backend not supported")
@@ -58,7 +58,7 @@ public class Context {
 
   var backend: Backend {
     get {
-      return gr_context_get_backend(handle)
+      return Backend.fromC(gr_context_get_backend(handle))
     }
   }
 }

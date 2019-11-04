@@ -591,6 +591,14 @@ public enum VertexMode: UInt32 {
   case triangles,
   triangleStrip,
   triangleFan
+
+  static func fromC(_ vmode: sk_vertices_vertex_mode_t) -> VertexMode {
+    VertexMode(rawValue: vmode.rawValue)!
+  }
+
+  func toC() -> sk_vertices_vertex_mode_t {
+    sk_vertices_vertex_mode_t(rawValue)
+  }
 }
 
 public enum ImageCachingHint: UInt32 {

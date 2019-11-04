@@ -37,20 +37,14 @@ public class Image {
   }
 
   public var width: Int32 {
-    get {
-      return sk_image_get_width(handle)
-    }
+    sk_image_get_width(handle)
   }
 
   public var height: Int32 {
-    get {
-      return sk_image_get_height(handle)
-    }
+    sk_image_get_height(handle)
   }
 
   public var uniqueId: UInt32 {
-    get {
-      return sk_image_get_unique_id(handle)
-    }
+    sk_image_get_unique_id(handle)
   }
 }

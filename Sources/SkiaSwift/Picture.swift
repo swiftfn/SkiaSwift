@@ -20,8 +20,6 @@ public class Picture {
   }
 
   public var uniqueId: UInt32 {
-    get {
-      return sk_picture_get_unique_id(handle)
-    }
+    sk_picture_get_unique_id(handle)
   }
 }

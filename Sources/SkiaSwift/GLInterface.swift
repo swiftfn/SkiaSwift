@@ -25,10 +25,10 @@ public class GLInterface {
   }
 
   public func validate() -> Bool {
-    return gr_glinterface_validate(handle)
+    gr_glinterface_validate(handle)
   }
 
   public func hasExtension(ext: String) -> Bool {
-    return gr_glinterface_has_extension(handle, ext)
+    gr_glinterface_has_extension(handle, ext)
   }
 }

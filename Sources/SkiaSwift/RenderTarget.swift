@@ -20,58 +20,40 @@ public class RenderTarget {
   }
 
   var valid: Bool {
-    get {
-      return gr_backendrendertarget_is_valid(handle)
-    }
+    gr_backendrendertarget_is_valid(handle)
   }
 
   var width: Int32 {
-    get {
-      return gr_backendrendertarget_get_width(handle)
-    }
+    gr_backendrendertarget_get_width(handle)
   }
 
   var height: Int32 {
-    get {
-      return gr_backendrendertarget_get_height(handle)
-    }
+    gr_backendrendertarget_get_height(handle)
   }
 
   var sampleCount: Int32 {
-    get {
-      return gr_backendrendertarget_get_samples(handle)
-    }
+    gr_backendrendertarget_get_samples(handle)
   }
 
   var stencilBits: Int32 {
-    get {
-      return gr_backendrendertarget_get_stencils(handle)
-    }
+    gr_backendrendertarget_get_stencils(handle)
   }
 
   var backend: Backend {
-    get {
-      return Backend.fromC(gr_backendrendertarget_get_backend(handle))
-    }
+    Backend.fromC(gr_backendrendertarget_get_backend(handle))
   }
 
   var size: SizeI {
-    get {
-      return SizeI(width, height)
-    }
+    SizeI(width, height)
   }
 
   var rect: RectI {
-    get {
-      return RectI(0, 0, width, height)
-    }
+    RectI(0, 0, width, height)
   }
 
   var glInfo: GlFramebufferInfo {
-    get {
-      var info = GlFramebufferInfo()
-      gr_backendrendertarget_get_gl_framebufferinfo(handle, &info)
-      return info
-    }
+    var info = GlFramebufferInfo()
+    gr_backendrendertarget_get_gl_framebufferinfo(handle, &info)
+    return info
   }
 }

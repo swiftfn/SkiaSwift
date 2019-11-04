@@ -17,163 +17,163 @@ public class Paint {
 
   public var antialias: Bool {
     get {
-      return sk_paint_is_antialias(handle)
+      sk_paint_is_antialias(handle)
     }
-    set(value) {
-      sk_paint_set_antialias(handle, value)
+    set {
+      sk_paint_set_antialias(handle, newValue)
     }
   }
 
   public var dither: Bool {
     get {
-      return sk_paint_is_dither(handle)
+      sk_paint_is_dither(handle)
     }
-    set(value) {
-      sk_paint_set_dither(handle, value)
+    set {
+      sk_paint_set_dither(handle, newValue)
     }
   }
 
   public var verticalText: Bool {
     get {
-      return sk_paint_is_verticaltext(handle)
+      sk_paint_is_verticaltext(handle)
     }
-    set(value) {
-      sk_paint_set_verticaltext(handle, value)
+    set {
+      sk_paint_set_verticaltext(handle, newValue)
     }
   }
 
   public var linearText: Bool {
     get {
-      return sk_paint_is_linear_text(handle)
+      sk_paint_is_linear_text(handle)
     }
-    set(value) {
-      sk_paint_set_linear_text(handle, value)
+    set {
+      sk_paint_set_linear_text(handle, newValue)
     }
   }
 
   public var subpixelText: Bool {
     get {
-      return sk_paint_is_subpixel_text(handle)
+      sk_paint_is_subpixel_text(handle)
     }
-    set(value) {
-      sk_paint_set_subpixel_text(handle, value)
+    set {
+      sk_paint_set_subpixel_text(handle, newValue)
     }
   }
 
   public var lcdRenderText: Bool {
     get {
-      return sk_paint_is_lcd_render_text(handle)
+      sk_paint_is_lcd_render_text(handle)
     }
-    set(value) {
-      sk_paint_set_lcd_render_text(handle, value)
+    set {
+      sk_paint_set_lcd_render_text(handle, newValue)
     }
   }
 
   public var embeddedBitmapText: Bool {
     get {
-      return sk_paint_is_embedded_bitmap_text(handle)
+      sk_paint_is_embedded_bitmap_text(handle)
     }
-    set(value) {
-      sk_paint_set_embedded_bitmap_text(handle, value)
+    set {
+      sk_paint_set_embedded_bitmap_text(handle, newValue)
     }
   }
 
   public var autohinted: Bool {
     get {
-      return sk_paint_is_autohinted(handle)
+      sk_paint_is_autohinted(handle)
     }
-    set(value) {
-      sk_paint_set_autohinted(handle, value)
+    set {
+      sk_paint_set_autohinted(handle, newValue)
     }
   }
 
   public var hintingLevel: PaintHinting {
     get {
-      return PaintHinting.fromC(sk_paint_get_hinting(handle))
+      PaintHinting.fromC(sk_paint_get_hinting(handle))
     }
-    set(value) {
-      sk_paint_set_hinting(handle, value.toC())
+    set {
+      sk_paint_set_hinting(handle, newValue.toC())
     }
   }
 
   public var fakeBoldText: Bool {
     get {
-      return sk_paint_is_fake_bold_text(handle)
+      sk_paint_is_fake_bold_text(handle)
     }
-    set(value) {
-      sk_paint_set_fake_bold_text(handle, value)
+    set {
+      sk_paint_set_fake_bold_text(handle, newValue)
     }
   }
 
   public var deviceKerningEnabled: Bool {
     get {
-      return sk_paint_is_dev_kern_text(handle)
+      sk_paint_is_dev_kern_text(handle)
     }
-    set(value) {
-      sk_paint_set_dev_kern_text(handle, value)
+    set {
+      sk_paint_set_dev_kern_text(handle, newValue)
     }
   }
 
   public var stroke: Bool {
     get {
-      return style != PaintStyle.fill
+      style != PaintStyle.fill
     }
-    set(value) {
-      style = value ? PaintStyle.stroke : PaintStyle.fill
+    set {
+      style = newValue ? PaintStyle.stroke : PaintStyle.fill
     }
   }
 
   public var style: PaintStyle {
     get {
-      return PaintStyle.fromC(sk_paint_get_style(handle))
+      PaintStyle.fromC(sk_paint_get_style(handle))
     }
-    set(value) {
-      sk_paint_set_style(handle, value.toC())
+    set {
+      sk_paint_set_style(handle, newValue.toC())
     }
   }
 
   public var color: Color {
     get {
-      return sk_paint_get_color(handle)
+      sk_paint_get_color(handle)
     }
-    set(value) {
-      sk_paint_set_color(handle, value)
+    set {
+      sk_paint_set_color(handle, newValue)
     }
   }
 
   public var strokeWidth: Float {
     get {
-      return sk_paint_get_stroke_width(handle)
+      sk_paint_get_stroke_width(handle)
     }
-    set(value) {
-      sk_paint_set_stroke_width(handle, value)
+    set {
+      sk_paint_set_stroke_width(handle, newValue)
     }
   }
 
   public var strokeMiter: Float {
     get {
-      return sk_paint_get_stroke_miter(handle)
+      sk_paint_get_stroke_miter(handle)
     }
-    set(value) {
-      sk_paint_set_stroke_miter(handle, value)
+    set {
+      sk_paint_set_stroke_miter(handle, newValue)
     }
   }
 
   public var strokeCap: sk_stroke_cap_t {
     get {
-      return sk_paint_get_stroke_cap(handle)
+      sk_paint_get_stroke_cap(handle)
     }
-    set(value) {
-      sk_paint_set_stroke_cap(handle, value)
+    set {
+      sk_paint_set_stroke_cap(handle, newValue)
     }
   }
 
   public var strokeJoin: sk_stroke_join_t {
     get {
-      return sk_paint_get_stroke_join(handle)
+      sk_paint_get_stroke_join(handle)
     }
-    set(value) {
-      sk_paint_set_stroke_join(handle, value)
+    set {
+      sk_paint_set_stroke_join(handle, newValue)
     }
   }
 
@@ -182,8 +182,8 @@ public class Paint {
       let shaderHandle = sk_paint_get_shader(handle)
       return shaderHandle == nil ? nil : Shader(shaderHandle!)
     }
-    set(value) {
-      sk_paint_set_shader(handle, value?.handle)
+    set {
+      sk_paint_set_shader(handle, newValue?.handle)
     }
   }
 
@@ -192,8 +192,8 @@ public class Paint {
       let maskFilterHandle = sk_paint_get_maskfilter(handle)
       return maskFilterHandle == nil ? nil : MaskFilter(maskFilterHandle!)
     }
-    set(value) {
-      sk_paint_set_maskfilter(handle, value?.handle)
+    set {
+      sk_paint_set_maskfilter(handle, newValue?.handle)
     }
   }
 }

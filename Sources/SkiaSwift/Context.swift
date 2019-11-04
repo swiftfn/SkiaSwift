@@ -45,7 +45,7 @@ public class Context {
   }
 
   public func GetMaxSurfaceSampleCount(colorType: ColorType) -> Int32 {
-    return gr_context_get_max_surface_sample_count_for_color_type(handle, sk_colortype_t(colorType.rawValue))
+    gr_context_get_max_surface_sample_count_for_color_type(handle, sk_colortype_t(colorType.rawValue))
   }
 
   public func flush() {
@@ -57,8 +57,6 @@ public class Context {
   }
 
   var backend: Backend {
-    get {
-      return Backend.fromC(gr_context_get_backend(handle))
-    }
+    Backend.fromC(gr_context_get_backend(handle))
   }
 }

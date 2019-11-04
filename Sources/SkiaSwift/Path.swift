@@ -62,10 +62,8 @@ public class Path {
   }
 
   public var bounds: Rect {
-    get {
-      var rect = Rect()
-      sk_path_get_bounds(handle, &rect)
-      return rect
-    }
+    var rect = Rect()
+    sk_path_get_bounds(handle, &rect)
+    return rect
   }
 }

@@ -120,7 +120,7 @@ public enum ColorType: UInt32 {
   rgbaF16
 
   func toC() -> sk_colortype_t {
-    return sk_colortype_t(rawValue)
+    sk_colortype_t(rawValue)
   }
 }
 
@@ -131,7 +131,7 @@ public enum AlphaType: UInt32 {
   unpremul
 
   func toC() -> sk_alphatype_t {
-    return sk_alphatype_t(rawValue)
+    sk_alphatype_t(rawValue)
   }
 }
 
@@ -188,19 +188,19 @@ public enum PixelGeometry: UInt32 {
   bgrVertical
 
   public static func isBgr(pg: PixelGeometry) -> Bool {
-    return pg == .bgrHorizontal || pg == .bgrVertical
+    pg == .bgrHorizontal || pg == .bgrVertical
   }
 
   public static func isRgb(pg: PixelGeometry) -> Bool {
-    return pg == .rgbHorizontal || pg == .rgbVertical
+    pg == .rgbHorizontal || pg == .rgbVertical
   }
 
   public static func isVertical(pg: PixelGeometry) -> Bool {
-    return pg == .bgrVertical || pg == .rgbVertical
+    pg == .bgrVertical || pg == .rgbVertical
   }
 
   public static func isHorizontal(pg: PixelGeometry) -> Bool {
-    return pg == .bgrHorizontal || pg == .rgbHorizontal
+    pg == .bgrHorizontal || pg == .rgbHorizontal
   }
 }
 
@@ -281,11 +281,11 @@ public enum PaintStyle: UInt32 {
   strokeAndFill
 
   static func fromC(_ paintStyle: sk_paint_style_t) -> PaintStyle {
-    return PaintStyle(rawValue: paintStyle.rawValue)!
+    PaintStyle(rawValue: paintStyle.rawValue)!
   }
 
   func toC() -> sk_paint_style_t {
-    return sk_paint_style_t(rawValue)
+    sk_paint_style_t(rawValue)
   }
 }
 
@@ -296,11 +296,11 @@ public enum PaintHinting: UInt32 {
   full
 
   static func fromC(_ paintHinting: sk_paint_hinting_t) -> PaintHinting {
-    return PaintHinting(rawValue: paintHinting.rawValue)!
+    PaintHinting(rawValue: paintHinting.rawValue)!
   }
 
   func toC() -> sk_paint_hinting_t {
-    return sk_paint_hinting_t(rawValue)
+    sk_paint_hinting_t(rawValue)
   }
 }
 
@@ -373,9 +373,7 @@ public struct CodecOptions {
   }
 
   public var hasSubset: Bool {
-    get {
-      return subset != nil
-    }
+    subset != nil
   }
 }
 
@@ -417,23 +415,23 @@ public struct FontMetrics {
   var strikeoutPosition: Float
 
   public func getUnderlineThickness() -> Float? {
-    return getIfValid(underlineThickness, FontMetrics.flagsUnderlineThicknessIsValid)
+    getIfValid(underlineThickness, FontMetrics.flagsUnderlineThicknessIsValid)
   }
 
   public func getUnderlinePosition() -> Float? {
-    return getIfValid(underlinePosition, FontMetrics.flagsUnderlinePositionIsValid)
+    getIfValid(underlinePosition, FontMetrics.flagsUnderlinePositionIsValid)
   }
 
   public func getStrikeoutThickness() -> Float? {
-    return getIfValid(strikeoutThickness, FontMetrics.flagsStrikeoutThicknessIsValid)
+    getIfValid(strikeoutThickness, FontMetrics.flagsStrikeoutThicknessIsValid)
   }
 
   public func getStrikeoutPosition() -> Float? {
-    return getIfValid(strikeoutPosition, FontMetrics.flagsStrikeoutPositionIsValid)
+    getIfValid(strikeoutPosition, FontMetrics.flagsStrikeoutPositionIsValid)
   }
 
   private func getIfValid(_ value: Float, _ flag: UInt) -> Float? {
-    return (flags & flag) == flag ? value : nil
+    (flags & flag) == flag ? value : nil
   }
 }
 
@@ -624,17 +622,15 @@ public struct HighContrastConfig {
 
   public var grayscale: Bool {
     get {
-      return fGrayscale != 0
+      fGrayscale != 0
     }
-    set(value) {
-      fGrayscale = value ? 1 : 0
+    set {
+      fGrayscale = newValue ? 1 : 0
     }
   }
 
   public var valid: Bool {
-    get {
-      return contrast >= -1.0 && contrast <= 1.0
-    }
+    contrast >= -1.0 && contrast <= 1.0
   }
 }
 

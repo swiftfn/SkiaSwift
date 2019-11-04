@@ -24,16 +24,12 @@ public class Surface {
   }
 
   public var canvas: Canvas {
-    get {
-      let canvasHandle = sk_surface_get_canvas(handle)
-      return Canvas(handle: canvasHandle!)
-    }
+    let canvasHandle = sk_surface_get_canvas(handle)
+    return Canvas(handle: canvasHandle!)
   }
 
   public var snapshot: Image {
-    get {
-      let imgHandle = sk_surface_new_image_snapshot(handle)
-      return Image(imgHandle!)
-    }
+    let imgHandle = sk_surface_new_image_snapshot(handle)
+    return Image(imgHandle!)
   }
 }

@@ -35,14 +35,10 @@ public class ImageData {
   }
 
   public var size: Int {
-    get {
-      return sk_data_get_size(handle)
-    }
+    sk_data_get_size(handle)
   }
 
   public var data: UnsafeRawPointer {
-    get {
-      return sk_data_get_data(handle)
-    }
+    sk_data_get_data(handle)
   }
 }

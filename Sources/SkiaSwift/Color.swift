@@ -6,11 +6,11 @@ public typealias Color = sk_color_t
 
 public extension PMColor {
   static func premultiply(color: Color) -> PMColor {
-    return sk_color_premultiply(color)
+    sk_color_premultiply(color)
   }
 
   static func unpremultiply(pmcolor: PMColor) -> Color {
-    return sk_color_unpremultiply(pmcolor)
+    sk_color_unpremultiply(pmcolor)
   }
 
   static func premultiply(colors: [Color]) -> [PMColor] {
@@ -26,27 +26,19 @@ public extension PMColor {
   }
 
   var pmAlpha: UInt8 {
-    get {
-      return UInt8(self >> ImageInfo.platformColorShift.a & 0xff)
-    }
+    UInt8(self >> ImageInfo.platformColorShift.a & 0xff)
   }
 
   var pmRed: UInt8 {
-    get {
-      return UInt8(self >> ImageInfo.platformColorShift.r & 0xff)
-    }
+    UInt8(self >> ImageInfo.platformColorShift.r & 0xff)
   }
 
   var pmGreen: UInt8 {
-    get {
-      return UInt8(self >> ImageInfo.platformColorShift.g & 0xff)
-    }
+    UInt8(self >> ImageInfo.platformColorShift.g & 0xff)
   }
 
   var pmBlue: UInt8 {
-    get {
-      return UInt8(self >> ImageInfo.platformColorShift.b & 0xff)
-    }
+    UInt8(self >> ImageInfo.platformColorShift.b & 0xff)
   }
 }
 
@@ -168,54 +160,39 @@ public extension Color {
   }
 
   var alpha: UInt8 {
-    get {
-      return UInt8(self >> 24 & 0xff)
-    }
+    UInt8(self >> 24 & 0xff)
   }
 
   var red: UInt8 {
-    get {
-      return UInt8(self >> 16 & 0xff)
-    }
+    UInt8(self >> 16 & 0xff)
   }
 
   var green: UInt8 {
-    get {
-      return UInt8(self >> 8 & 0xff)
-    }
+    UInt8(self >> 8 & 0xff)
   }
 
   var blue: UInt8 {
-    get {
-      return UInt8(self & 0xff)
-    }
+    UInt8(self & 0xff)
   }
 
   var hue: Float {
-    get {
-      let hsv = toHsv()
-      return hsv.0
-    }
+    toHsv().0
   }
 
   func withRed(_ red: UInt8) -> Color {
-    return Color(r: red, g: green, b: blue, a: alpha)
+    Color(r: red, g: green, b: blue, a: alpha)
   }
 
   func withGreen(_ green: UInt8) -> Color {
-    return Color(r: red, g: green, b: blue, a: alpha)
+    Color(r: red, g: green, b: blue, a: alpha)
   }
 
   func withBlue(_ blue: UInt8) -> Color {
-    return Color(r: red, g: green, b: blue, a: alpha)
+    Color(r: red, g: green, b: blue, a: alpha)
   }
 
   func withAlpha(_ alpha: UInt8) -> Color {
-    return Color(r: red, g: green, b: blue, a: alpha)
-  }
-
-  static func argb(_ a: UInt32, _ r: UInt32, _ g: UInt32, _ b: UInt32) -> sk_color_t {
-    return (((a) << 24) | ((r) << 16) | ((g) << 8) | (b))
+    Color(r: red, g: green, b: blue, a: alpha)
   }
 
   func toHsl() -> (Float, Float, Float) {

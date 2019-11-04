@@ -205,34 +205,34 @@ extension Matrix {
 
   public var scaleX: Float {
     get {
-      return mat.0
+      mat.0
     }
-    set(value) {
-      mat.0 = value
+    set {
+      mat.0 = newValue
     }
   }
 
   public var skewX: Float {
     get {
-      return mat.1
+      mat.1
     }
-    set(value) {
-      mat.1 = value
+    set {
+      mat.1 = newValue
     }
   }
 
   public var transX: Float {
     get {
-      return mat.2
+      mat.2
     }
-    set(value) {
-      mat.2 = value
+    set {
+      mat.2 = newValue
     }
   }
 
 	public var skewY: Float {
     get {
-      return mat.3
+      mat.3
     }
     set(value) {
       mat.3 = value
@@ -241,46 +241,46 @@ extension Matrix {
 
   public var scaleY: Float {
     get {
-      return mat.4
+      mat.4
     }
-    set(value) {
-      mat.4 = value
+    set {
+      mat.4 = newValue
     }
   }
 
   public var transY: Float {
     get {
-      return mat.5
+      mat.5
     }
-    set(value) {
-      mat.5 = value
+    set {
+      mat.5 = newValue
     }
   }
 
 	public var persp0: Float {
     get {
-      return mat.6
+      mat.6
     }
-    set(value) {
-      mat.6 = value
+    set {
+      mat.6 = newValue
     }
   }
 
   public var persp1: Float {
     get {
-      return mat.7
+      mat.7
     }
-    set(value) {
-      mat.7 = value
+    set {
+      mat.7 = newValue
     }
   }
 
   public var persp2: Float {
     get {
-      return mat.8
+      mat.8
     }
-    set(value) {
-      mat.8 = value
+    set {
+      mat.8 = newValue
     }
   }
 
@@ -307,7 +307,7 @@ extension Matrix {
   public var values: [Float] {
     mutating get {
       // https://forums.developer.apple.com/thread/72120
-      return [Float](UnsafeBufferPointer(start: &mat.0, count: MemoryLayout.size(ofValue: mat)))
+      [Float](UnsafeBufferPointer(start: &mat.0, count: MemoryLayout.size(ofValue: mat)))
     }
     set(value) {
       if (value.count != Indices.count) {

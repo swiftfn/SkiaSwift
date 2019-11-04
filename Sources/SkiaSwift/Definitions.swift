@@ -739,6 +739,14 @@ public enum RoundRectType: UInt32 {
   simple,
   ninePatch,
   complex
+
+  static func fromC(_ rrectType: sk_rrect_type_t) -> RoundRectType {
+    RoundRectType(rawValue: rrectType.rawValue)!
+  }
+
+  func toC() -> sk_rrect_type_t {
+    sk_rrect_type_t(rawValue)
+  }
 }
 
 public enum RoundRectCorner: UInt32 {
@@ -746,4 +754,12 @@ public enum RoundRectCorner: UInt32 {
   upperRight,
   lowerRight,
   lowerLeft
+
+  static func fromC(_ rrectCorner: sk_rrect_corner_t) -> RoundRectCorner {
+    RoundRectCorner(rawValue: rrectCorner.rawValue)!
+  }
+
+  func toC() -> sk_rrect_corner_t {
+    sk_rrect_corner_t(rawValue)
+  }
 }

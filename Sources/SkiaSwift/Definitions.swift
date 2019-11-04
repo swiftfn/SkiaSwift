@@ -120,7 +120,7 @@ public enum ColorType: UInt32 {
   rgbaF16
 
   func toC() -> sk_colortype_t {
-    return sk_colortype_t(self.rawValue)
+    return sk_colortype_t(rawValue)
   }
 }
 
@@ -131,7 +131,7 @@ public enum AlphaType: UInt32 {
   unpremul
 
   func toC() -> sk_alphatype_t {
-    return sk_alphatype_t(self.rawValue)
+    return sk_alphatype_t(rawValue)
   }
 }
 
@@ -279,6 +279,14 @@ public enum PaintStyle: UInt32 {
   case fill,
   stroke,
   strokeAndFill
+
+  static func fromC(_ paintStyle: sk_paint_style_t) -> PaintStyle {
+    return PaintStyle(rawValue: paintStyle.rawValue)!
+  }
+
+  func toC() -> sk_paint_style_t {
+    return sk_paint_style_t(rawValue)
+  }
 }
 
 public enum PaintHinting: UInt32 {
@@ -286,6 +294,14 @@ public enum PaintHinting: UInt32 {
   slight,
   normal,
   full
+
+  static func fromC(_ paintHinting: sk_paint_hinting_t) -> PaintHinting {
+    return PaintHinting(rawValue: paintHinting.rawValue)!
+  }
+
+  func toC() -> sk_paint_hinting_t {
+    return sk_paint_hinting_t(rawValue)
+  }
 }
 
 public enum RegionOperation: UInt32 {

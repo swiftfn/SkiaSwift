@@ -30,6 +30,7 @@ func draw(_ canvas: Canvas) {
     let stroke = Paint()
     stroke.color = Color(r: 0xFF, g: 0, b: 0)
     stroke.antialias = true
+    stroke.stroke = true
     stroke.strokeWidth = 5.0
 
     let path = Path()

@@ -202,11 +202,27 @@ public enum PixelGeometry: UInt32 {
   public static func isHorizontal(pg: PixelGeometry) -> Bool {
     pg == .bgrHorizontal || pg == .rgbHorizontal
   }
+
+  static func fromC(_ geometry: sk_pixelgeometry_t) -> PixelGeometry {
+    PixelGeometry(rawValue: geometry.rawValue)!
+  }
+
+  func toC() -> sk_pixelgeometry_t {
+    sk_pixelgeometry_t(rawValue)
+  }
 }
 
 public enum SurfacePropsFlags: UInt32 {
   case none
   case useDeviceIndependentFonts
+
+  static func fromC(_ flags: UInt32) -> SurfacePropsFlags {
+    SurfacePropsFlags(rawValue: flags)!
+  }
+
+  func toC() -> UInt32 {
+    rawValue
+  }
 }
 
 public enum Encoding: UInt32 {

@@ -1,10 +1,10 @@
 # SkiaSwift
 
-Swift classes wrapper for [SkiaSharp](https://github.com/mono/SkiaSharp)'s C API
+Swift wrapper for [SkiaSharp](https://github.com/mono/SkiaSharp)'s C API
 
 See:
 * [SkiaSharp's C API](https://github.com/mono/skia), which is a fork of [Skia](https://skia.org),
-  to add more features to the default C API
+  to add more features to the original Skia's C API
 * [CSkiaSwift](https://github.com/swiftfn/SkiaSwift)
 
 This project uses [Swift Package Manager](https://swift.org/package-manager/):
@@ -12,9 +12,9 @@ This project uses [Swift Package Manager](https://swift.org/package-manager/):
 * https://github.com/apple/swift-package-manager/blob/master/Documentation/PackageDescription.md
 * https://clang.llvm.org/docs/Modules.html
 
-## Build SkiaSharp's fork of Skia
+## Build SkiaSharp's Skia fork
 
-Download [SkiaSharp's fork of Skia](https://github.com/mono/skia),
+Download [SkiaSharp's Skia fork](https://github.com/mono/skia),
 then see these doc to build:
 * https://skia.org/user/download
 * https://skia.org/user/build
@@ -24,18 +24,19 @@ then see these doc to build:
 Build static libraries:
 
 ```sh
-bin/gn gen out/mac --args="is_debug=false is_official_build=true \
+bin/gn gen out --args="is_debug=false is_official_build=true \
 skia_use_system_expat=false skia_use_system_libjpeg_turbo=false \
 skia_use_system_libpng=false skia_use_system_libwebp=false \
 skia_use_system_zlib=false skia_use_system_icu=false \
 skia_use_system_harfbuzz=false"
 
-ninja -C out/mac
+ninja -C out
 ```
 
-## Build CSkiaSwift for Mac
+## Build CSkiaSwift
 
-Create symlinks to the built Skia above (`include/c` and `out/mac` directories are used):
+Create symlinks to the built Skia above
+(only `include/c` and `out` directories are used):
 
 ```sh
 cd Sources/CSkia/include

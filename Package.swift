@@ -14,7 +14,7 @@ let package = Package(
             dependencies: [],
             linkerSettings: [
                 .linkedLibrary("skia"),
-                .unsafeFlags(["-LSources/CSkia/out/mac"])
+                .unsafeFlags(["-LSources/CSkia/out"])
             ]),
         .target(
             name: "SkiaSwift",

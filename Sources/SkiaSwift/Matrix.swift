@@ -203,87 +203,6 @@ public extension Matrix {
 
   // https://stackoverflow.com/questions/34776546/access-element-of-fixed-length-c-array-in-swift
 
-  var scaleX: Float {
-    get {
-      mat.0
-    }
-    set {
-      mat.0 = newValue
-    }
-  }
-
-  var skewX: Float {
-    get {
-      mat.1
-    }
-    set {
-      mat.1 = newValue
-    }
-  }
-
-  var transX: Float {
-    get {
-      mat.2
-    }
-    set {
-      mat.2 = newValue
-    }
-  }
-
-	var skewY: Float {
-    get {
-      mat.3
-    }
-    set(value) {
-      mat.3 = value
-    }
-  }
-
-  var scaleY: Float {
-    get {
-      mat.4
-    }
-    set {
-      mat.4 = newValue
-    }
-  }
-
-  var transY: Float {
-    get {
-      mat.5
-    }
-    set {
-      mat.5 = newValue
-    }
-  }
-
-	var persp0: Float {
-    get {
-      mat.6
-    }
-    set {
-      mat.6 = newValue
-    }
-  }
-
-  var persp1: Float {
-    get {
-      mat.7
-    }
-    set {
-      mat.7 = newValue
-    }
-  }
-
-  var persp2: Float {
-    get {
-      mat.8
-    }
-    set {
-      mat.8 = newValue
-    }
-  }
-
   init(
     _ scaleX: Float, _ skewX: Float, _ transX: Float,
     _ skewY: Float, _ scaleY: Float, _ transY: Float,
@@ -307,7 +226,7 @@ public extension Matrix {
   var values: [Float] {
     mutating get {
       // https://forums.developer.apple.com/thread/72120
-      [Float](UnsafeBufferPointer(start: &mat.0, count: MemoryLayout.size(ofValue: mat)))
+      [Float](UnsafeBufferPointer(start: &scaleX, count: 9 * MemoryLayout.size(ofValue: scaleX)))
     }
     set(value) {
       if (value.count != Indices.count) {
